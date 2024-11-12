@@ -1,0 +1,57 @@
+{
+  "id": "someOrderId",
+  "version": 1,
+  "items": [
+    {
+      "id": "someItemId",
+      "name": "ATD 3 Conf. Days",
+      "amount": 2,
+      "price": {
+        "value": 225000,
+        "monetaryUnit": "cent",
+        "currency": "EUR"
+      }
+    }
+  ],
+  "coupons": [
+    {
+      "id": "someCouponId",
+      "description": "Speaker Coupon",
+      "reducedRateInPercentage": 100
+    }
+  ],
+  "deliveryDate": [
+    2024,
+    11,
+    22
+  ],
+  "customer": {
+    "id": "someCustomerId",
+    "firstName": "REWE",
+    "lastName": "Digital"
+  },
+  "shippingAddress": {
+    "id": "someShippingAddressId",
+    "firstName": "Janina",
+    "lastName": "Nemec",
+    "streetName": "Schanzenstr.",
+    "houseNumber": "6-20",
+    "city": "Köln",
+    "country": "Deutschland",
+    "phone": "0221 9758420",
+    "email": "kontakt@rewe-digital.com",
+    "postalCode": "51063"
+  },
+  "billingAddress": {
+    "id": "someBillingAddressId",
+    "firstName": "Janina",
+    "lastName": "Nemec",
+    "streetName": "Domstr.",
+    "houseNumber": "20",
+    "city": "Köln",
+    "country": "Deutschland",
+    "phone": "+49 221 1490",
+    "email": "info@rewe-group.com",
+    "postalCode": "50668"
+  }
+}

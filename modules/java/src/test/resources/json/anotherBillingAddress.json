@@ -1,0 +1,15 @@
+{
+  "id": "anotherBillingAddressId",
+  "firstName": "Janina",
+  "lastName": "Nemec",
+  "streetName": "Schanzenstr.",
+  "houseNumber": "6-20",
+  "city": "Köln",
+  "country": "Deutschland",
+  "phone": "0221 9758420",
+  "latitude": "50.96490882194811",
+  "longitude": "7.014472855463499",
+  "email": "kontakt@rewe-digital.com",
+  "postalCode": "51063",
+  "status": "KNOWN_CUSTOMER"
+}
