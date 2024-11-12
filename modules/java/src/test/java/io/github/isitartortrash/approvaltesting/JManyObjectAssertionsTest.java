@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import static io.github.isitartortrash.TestOrderBuilderKt.aDefaultOrder;
+import static io.github.isitartortrash.approvaltesting.DefaultTestOrderBuilder.aDefaultOrder;
 import static io.github.isitartortrash.approvaltesting.FakeFunctionalityKt.anOrderWasProcessed;
 import static io.github.isitartortrash.approvaltesting.FakeFunctionalityKt.callRestEndpoint;
 import static io.github.isitartortrash.approvaltesting.TestUtils.jsonMapper;

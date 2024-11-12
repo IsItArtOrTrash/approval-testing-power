@@ -2,7 +2,7 @@ package io.github.isitartortrash.approvaltesting;
 
 import org.junit.jupiter.api.Test;
 
-import static io.github.isitartortrash.TestOrderBuilderKt.aDefaultOrder;
+import static io.github.isitartortrash.approvaltesting.DefaultTestOrderBuilder.aDefaultOrder;
 import static io.github.isitartortrash.approvaltesting.FakeFunctionalityKt.anOrderWasProcessed;
 import static io.github.isitartortrash.approvaltesting.FakeFunctionalityKt.callRestEndpoint;
 import static org.assertj.core.api.Assertions.assertThat;
