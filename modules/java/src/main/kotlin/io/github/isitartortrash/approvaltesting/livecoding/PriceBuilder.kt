@@ -1,4 +1,4 @@
-package io.github.isitartortrash.approvaltesting
+package io.github.isitartortrash.approvaltesting.livecoding
 
 class PriceBuilder {
     private var value: Int? = null

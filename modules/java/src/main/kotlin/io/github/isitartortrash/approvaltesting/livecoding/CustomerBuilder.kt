@@ -1,4 +1,4 @@
-package io.github.isitartortrash.approvaltesting
+package io.github.isitartortrash.approvaltesting.livecoding
 
 class CustomerBuilder {
     private var id: String? = null

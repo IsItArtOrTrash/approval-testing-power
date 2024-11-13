@@ -1,13 +1,14 @@
-package io.github.isitartortrash.approvaltesting;
+package io.github.isitartortrash.approvaltesting.other;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import io.github.isitartortrash.approvaltesting.livecoding.ShopOrder;
 import org.junit.jupiter.api.Test;
 
 import static io.github.isitartortrash.approvaltesting.DefaultTestOrderBuilder.aDefaultOrder;
-import static io.github.isitartortrash.approvaltesting.FakeFunctionalityKt.anOrderWasProcessed;
-import static io.github.isitartortrash.approvaltesting.FakeFunctionalityKt.callRestEndpoint;
 import static io.github.isitartortrash.approvaltesting.TestUtils.jsonMapper;
+import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.anOrderWasProcessed;
+import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.callRestEndpoint;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class JManyJsonNodeAssertionsTest {

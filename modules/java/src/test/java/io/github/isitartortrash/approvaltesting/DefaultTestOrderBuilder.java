@@ -1,14 +1,16 @@
 package io.github.isitartortrash.approvaltesting;
 
+import io.github.isitartortrash.approvaltesting.livecoding.ShopOrder;
+
 import java.time.LocalDate;
 import java.util.List;
 
-import static io.github.isitartortrash.approvaltesting.AddressBuilder.anAddress;
-import static io.github.isitartortrash.approvaltesting.CouponBuilder.aCoupon;
-import static io.github.isitartortrash.approvaltesting.CustomerBuilder.aCustomer;
-import static io.github.isitartortrash.approvaltesting.ItemBuilder.anItem;
-import static io.github.isitartortrash.approvaltesting.OrderBuilder.anOrder;
-import static io.github.isitartortrash.approvaltesting.PriceBuilder.aPrice;
+import static io.github.isitartortrash.approvaltesting.livecoding.AddressBuilder.anAddress;
+import static io.github.isitartortrash.approvaltesting.livecoding.CouponBuilder.aCoupon;
+import static io.github.isitartortrash.approvaltesting.livecoding.CustomerBuilder.aCustomer;
+import static io.github.isitartortrash.approvaltesting.livecoding.ItemBuilder.anItem;
+import static io.github.isitartortrash.approvaltesting.livecoding.OrderBuilder.anOrder;
+import static io.github.isitartortrash.approvaltesting.livecoding.PriceBuilder.aPrice;
 
 public class DefaultTestOrderBuilder {
   public static ShopOrder aDefaultOrder(String orderId) {

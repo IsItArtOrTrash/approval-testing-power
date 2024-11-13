@@ -1,4 +1,4 @@
-package io.github.isitartortrash.approvaltesting
+package io.github.isitartortrash.approvaltesting.livecoding
 
 import java.time.LocalDate
 import java.time.LocalDateTime

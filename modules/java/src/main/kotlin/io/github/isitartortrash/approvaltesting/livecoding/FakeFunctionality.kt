@@ -1,4 +1,4 @@
-package io.github.isitartortrash.approvaltesting
+package io.github.isitartortrash.approvaltesting.livecoding
 
 import com.fasterxml.jackson.databind.DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE
 import com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES
@@ -38,9 +38,5 @@ fun postRestEndpoint(shopOrderString: String) {
 
 fun callRestEndpoint(orderId: String): String? {
     return jsonMapper.writeValueAsString(savedOrders.get(orderId)!!)
-}
-
-fun callRestEndpointForBillingAddress(orderId: String): String? {
-    return jsonMapper.writeValueAsString(savedOrders.get(orderId)!!.billingAddress)
 }
 

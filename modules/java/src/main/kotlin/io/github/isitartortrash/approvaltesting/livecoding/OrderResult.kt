@@ -1,46 +1,50 @@
-package io.github.isitartortrash.approvaltesting
+package io.github.isitartortrash.approvaltesting.livecoding
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonValue
 import java.time.LocalDate
+import java.time.LocalDateTime
 
-data class ShopOrder @JsonCreator constructor(
+data class OrderResult @JsonCreator constructor(
     @JsonProperty("id") val id: String,
     @JsonProperty("version") val version: Int,
-    @JsonProperty("items") val items: List<ShopItem>,
-    @JsonProperty("coupons") val coupons: List<ShopCoupon> = emptyList(),
+    @JsonProperty("items") val items: List<ItemResult>,
+    @JsonProperty("coupons") val coupons: List<CouponResult> = emptyList(),
+    @JsonProperty("orderTimeStamp") val orderTimeStamp: LocalDateTime,
     @JsonProperty("deliveryDate") val deliveryDate: LocalDate,
-    @JsonProperty("customer") val customer: ShopCustomer,
-    @JsonProperty("shippingAddress") val shippingAddress: ShopAddress,
-    @JsonProperty("billingAddress") val billingAddress: ShopAddress
+    @JsonProperty("shippingCost") val shippingCost: List<PriceResult>,
+    @JsonProperty("customer") val customer: CustomerResult,
+    @JsonProperty("shippingAddress") val shippingAddress: AddressResult,
+    @JsonProperty("billingAddress") val billingAddress: AddressResult
 )
 
-data class ShopItem @JsonCreator constructor(
+data class ItemResult @JsonCreator constructor(
     @JsonProperty("id") val id: String,
     @JsonProperty("name") val name: String,
     @JsonProperty("amount") val amount: Int,
-    @JsonProperty("price") val price: ShopPrice
+    @JsonProperty("price") val price: PriceResult
 )
 
-data class ShopCoupon @JsonCreator constructor(
+data class CouponResult @JsonCreator constructor(
     @JsonProperty("id") val id: String,
     @JsonProperty("description") val description: String,
     @JsonProperty("reducedRateInPercentage") val reducedRateInPercentage: Int
 )
 
-data class ShopPrice @JsonCreator constructor(
+data class PriceResult @JsonCreator constructor(
     @JsonProperty("value") val value: Int,
     @JsonProperty("monetaryUnit") val monetaryUnit: String,
     @JsonProperty("currency") val currency: String
 )
 
-data class ShopCustomer @JsonCreator constructor(
+data class CustomerResult @JsonCreator constructor(
     @JsonProperty("id") val id: String,
     @JsonProperty("firstName") val firstName: String,
     @JsonProperty("lastName") val lastName: String
 )
 
-data class ShopAddress @JsonCreator constructor(
+data class AddressResult @JsonCreator constructor(
     @JsonProperty("id") val id: String,
     @JsonProperty("firstName") val firstName: String,
     @JsonProperty("lastName") val lastName: String,
@@ -49,6 +53,17 @@ data class ShopAddress @JsonCreator constructor(
     @JsonProperty("city") val city: String,
     @JsonProperty("country") val country: String,
     @JsonProperty("phone") val phone: String,
+    @JsonProperty("latitude") val latitude: String,
+    @JsonProperty("longitude") val longitude: String,
     @JsonProperty("email") val email: String,
-    @JsonProperty("postalCode") val postalCode: String
+    @JsonProperty("postalCode") val postalCode: String,
+    @JsonProperty("status") val status: CustomerStatus,
 )
+
+enum class CustomerStatus {
+    NEW_CUSTOMER,
+    KNOWN_CUSTOMER;
+
+    @JsonValue
+    fun value() = name.lowercase()
+}

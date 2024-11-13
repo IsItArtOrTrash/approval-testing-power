@@ -1,4 +1,4 @@
-package io.github.isitartortrash.approvaltesting
+package io.github.isitartortrash.approvaltesting.livecoding
 
 class ItemBuilder {
     private var id: String? = null
