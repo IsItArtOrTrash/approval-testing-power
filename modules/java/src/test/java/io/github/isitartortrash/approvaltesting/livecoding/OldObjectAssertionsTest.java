@@ -12,7 +12,7 @@ import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctional
 import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.callRestEndpoint;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class JManyObjectAssertionsTest {
+class OldObjectAssertionsTest {
 
   @Test
   void assertionTest() throws JsonProcessingException {
