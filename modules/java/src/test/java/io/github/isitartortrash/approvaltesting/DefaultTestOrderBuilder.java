@@ -38,7 +38,6 @@ public class DefaultTestOrderBuilder {
                 aCoupon()
                     .id("someCouponId")
                     .description("Speaker Coupon")
-                    .reducedRateInPercentage(100)
                     .build()
             )
         )

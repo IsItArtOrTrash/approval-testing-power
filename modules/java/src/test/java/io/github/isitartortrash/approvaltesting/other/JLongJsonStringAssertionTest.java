@@ -41,7 +41,7 @@ public class JLongJsonStringAssertionTest {
                     {
                       "id": "someCouponId",
                       "description": "Speaker Coupon",
-                      "reducedRateInPercentage": 100
+                      "reducedRateInPercentage": 10
                     }
                   ],
                   "orderTimeStamp":"2024-07-19T11:45:00",

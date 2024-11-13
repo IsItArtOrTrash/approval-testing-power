@@ -42,7 +42,7 @@ fun ShopItem.enrich() = ItemResult(
 fun ShopCoupon.enrich() = CouponResult(
     id = id,
     description = description,
-    reducedRateInPercentage = reducedRateInPercentage
+    reducedRateInPercentage = if (id == "speakerCouponId") 100 else 10
 )
 
 fun ShopOrder.enrich() = OrderResult(

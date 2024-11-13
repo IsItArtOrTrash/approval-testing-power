@@ -40,7 +40,7 @@ class JManyObjectAssertionsTest {
     CouponResult coupon = orderResult.getCoupons().getFirst();
     assertThat(coupon.getId()).isEqualTo("someCouponId");
     assertThat(coupon.getDescription()).isEqualTo("Speaker Coupon");
-    assertThat(coupon.getReducedRateInPercentage()).isEqualTo(100);
+    assertThat(coupon.getReducedRateInPercentage()).isEqualTo(10);
 
     assertThat(orderResult.getOrderTimeStamp()).isEqualTo(LocalDateTime.of(2024, 7, 19, 11, 45));
     assertThat(orderResult.getDeliveryDate()).isEqualTo(LocalDate.of(2024, 11, 22));

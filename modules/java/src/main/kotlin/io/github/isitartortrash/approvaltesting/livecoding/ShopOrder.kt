@@ -24,8 +24,7 @@ data class ShopItem @JsonCreator constructor(
 
 data class ShopCoupon @JsonCreator constructor(
     @JsonProperty("id") val id: String,
-    @JsonProperty("description") val description: String,
-    @JsonProperty("reducedRateInPercentage") val reducedRateInPercentage: Int
+    @JsonProperty("description") val description: String
 )
 
 data class ShopPrice @JsonCreator constructor(

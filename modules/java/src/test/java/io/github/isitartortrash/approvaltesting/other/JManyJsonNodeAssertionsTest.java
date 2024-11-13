@@ -38,7 +38,7 @@ class JManyJsonNodeAssertionsTest {
     JsonNode coupon = result.get("coupons").get(0);
     assertThat(coupon.get("id").asText()).isEqualTo("someCouponId");
     assertThat(coupon.get("description").asText()).isEqualTo("Speaker Coupon");
-    assertThat(coupon.get("reducedRateInPercentage").asInt()).isEqualTo(100);
+    assertThat(coupon.get("reducedRateInPercentage").asInt()).isEqualTo(10);
 
     JsonNode orderTimeStamp = result.get("orderTimeStamp");
     assertThat(orderTimeStamp.asText()).isEqualTo("2024-07-19T11:45:00");

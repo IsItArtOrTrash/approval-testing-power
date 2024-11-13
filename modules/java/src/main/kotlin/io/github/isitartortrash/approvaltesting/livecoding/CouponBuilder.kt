@@ -3,7 +3,6 @@ package io.github.isitartortrash.approvaltesting.livecoding
 class CouponBuilder {
     private var id: String? = null
     private var description: String? = null
-    private var reducedRateInPercentage: Int? = null
 
     fun id(id: String?): CouponBuilder {
         this.id = id
@@ -15,13 +14,8 @@ class CouponBuilder {
         return this
     }
 
-    fun reducedRateInPercentage(reducedRateInPercentage: Int): CouponBuilder {
-        this.reducedRateInPercentage = reducedRateInPercentage
-        return this
-    }
-
     fun build(): ShopCoupon {
-        return ShopCoupon(id!!, description!!, reducedRateInPercentage!!)
+        return ShopCoupon(id!!, description!!)
     }
 
     companion object {
