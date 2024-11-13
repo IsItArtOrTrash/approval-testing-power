@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static io.github.isitartortrash.approvaltesting.TestUtils.jsonMapper;
@@ -100,7 +99,6 @@ class OldObjectAssertionsTest {
     assertThat(coupon.getId()).isEqualTo("speakerCouponId");
     assertThat(coupon.getDescription()).isEqualTo("Speaker Coupon");
 
-    assertThat(orderResult.getOrderTimeStamp()).isEqualTo(LocalDateTime.of(2024, 7, 19, 11, 45));
     assertThat(orderResult.getDeliveryDate()).isEqualTo(LocalDate.of(2024, 11, 22));
 
     PriceResult shippingCost = orderResult.getShippingCost().getFirst();

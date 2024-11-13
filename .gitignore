@@ -9,6 +9,10 @@ build/
 
 # Approvals
 *.received.json
+.approval_tests_temp
+.approval_tests_temp/
+
+.jqwik-database
 
 ### IntelliJ IDEA ###
 # HTTP Client

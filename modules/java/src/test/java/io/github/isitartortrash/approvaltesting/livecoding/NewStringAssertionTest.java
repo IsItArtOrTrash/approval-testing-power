@@ -101,12 +101,10 @@ public class NewStringAssertionTest {
                   "coupons": [
                     {
                       "id": "speakerCouponId",
-                      "description": "Speaker Coupon",
-                      "reducedRateInPercentage": 100
+                      "description": "Speaker Coupon"
                     }
                   ],
                   "orderTimeStamp":"2024-07-19T11:45:00",
-                  "deliveryDate":"2024-11-22",
                   "shippingCost": [
                     {
                       "value": 500,
@@ -123,22 +121,22 @@ public class NewStringAssertionTest {
                     "id": "someShippingAddressId",
                     "firstName": "Janina",
                     "lastName": "Nemec",
-                    "streetName": "Schanzenstr.",
+                    "streetName": "Schanzenstr."
                     "houseNumber": "6-20",
-                    "city": "Köln",
+                    "city": "Köln", 
                     "country": "Deutschland",
                     "phone": "0221 9758420",
                     "latitude": "50.96490882194811",
                     "longitude": "7.014472855463499",
                     "email": "kontakt@rewe-digital.com",
                     "postalCode": "51063",
-                    "status":"known_customer"
+                    "status":"KNOWN_CUSTOMER"
                   },
                   "billingAddress": {
                     "id": "someBillingAddressId",
                     "firstName": "Micha",
                     "lastName": "Kutz",
-                    "streetName": "Domstr.",
+                    "streetName": "Domstr. ",
                     "houseNumber": "20",
                     "city": "Köln",
                     "country": "Deutschland",
@@ -147,7 +145,7 @@ public class NewStringAssertionTest {
                     "longitude": "6.959302840118697",
                     "email": "info@rewe-group.com",
                     "postalCode": "50668",
-                    "status":"new_customer"
+                    "status":"NEW_CUSTOMER"
                   }
                                 }""");
   }
