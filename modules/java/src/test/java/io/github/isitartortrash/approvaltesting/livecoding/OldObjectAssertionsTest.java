@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.util.List;
 
-import static io.github.isitartortrash.approvaltesting.TestUtils.jsonMapper;
 import static io.github.isitartortrash.approvaltesting.livecoding.AddressBuilder.anAddress;
 import static io.github.isitartortrash.approvaltesting.livecoding.CouponBuilder.aCoupon;
 import static io.github.isitartortrash.approvaltesting.livecoding.CustomerBuilder.aCustomer;
@@ -15,6 +14,7 @@ import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctional
 import static io.github.isitartortrash.approvaltesting.livecoding.ItemBuilder.anItem;
 import static io.github.isitartortrash.approvaltesting.livecoding.OrderBuilder.anOrder;
 import static io.github.isitartortrash.approvaltesting.livecoding.PriceBuilder.aPrice;
+import static io.github.isitartortrash.approvaltesting.utils.TestUtils.jsonMapper;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class OldObjectAssertionsTest {

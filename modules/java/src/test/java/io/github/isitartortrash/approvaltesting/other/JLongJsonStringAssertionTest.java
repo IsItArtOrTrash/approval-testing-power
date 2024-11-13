@@ -3,9 +3,9 @@ package io.github.isitartortrash.approvaltesting.other;
 import io.github.isitartortrash.approvaltesting.livecoding.ShopOrder;
 import org.junit.jupiter.api.Test;
 
-import static io.github.isitartortrash.approvaltesting.DefaultTestOrderBuilder.aDefaultOrder;
 import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.anOrderWasProcessed;
 import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.callRestEndpoint;
+import static io.github.isitartortrash.approvaltesting.utils.DefaultTestOrderBuilder.aDefaultOrder;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class JLongJsonStringAssertionTest {

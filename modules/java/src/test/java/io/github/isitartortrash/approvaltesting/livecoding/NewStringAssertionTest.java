@@ -123,7 +123,7 @@ public class NewStringAssertionTest {
                     "lastName": "Nemec",
                     "streetName": "Schanzenstr."
                     "houseNumber": "6-20",
-                    "city": "Köln", 
+                    "city" : "Köln",
                     "country": "Deutschland",
                     "phone": "0221 9758420",
                     "latitude": "50.96490882194811",
