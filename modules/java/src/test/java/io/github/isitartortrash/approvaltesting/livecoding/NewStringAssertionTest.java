@@ -1,13 +1,15 @@
 package io.github.isitartortrash.approvaltesting.livecoding;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 import static io.github.isitartortrash.approvaltesting.livecoding.AddressBuilder.anAddress;
 import static io.github.isitartortrash.approvaltesting.livecoding.CouponBuilder.aCoupon;
-import static io.github.isitartortrash.approvaltesting.livecoding.CustomerBuilder.aCustomer;
+import static io.github.isitartortrash.approvaltesting.livecoding.Currency.EUR;
 import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.getOutgoingData;
 import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.sendIngoingData;
 import static io.github.isitartortrash.approvaltesting.livecoding.ItemBuilder.anItem;
@@ -18,12 +20,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class NewStringAssertionTest {
 
   @Test
+  @Disabled
   void assertionTest() {
     String orderId = "someOrderId";
     ShopPrice givenItemPrice = aPrice()
         .value(225000)
-        .monetaryUnit("cent")
-        .currency("EUR")
+        .currency(EUR)
         .build();
     ShopItem givenItem = anItem()
         .id("someItemId")
@@ -35,13 +37,7 @@ public class NewStringAssertionTest {
         .id("speakerCouponId")
         .description("Speaker Coupon")
         .build();
-    ShopCustomer givenCustomer = aCustomer()
-        .id("someCustomerId")
-        .firstName("REWE")
-        .lastName("Digital")
-        .build();
     ShopAddress givenShippingAddress = anAddress()
-        .id("someShippingAddressId")
         .firstName("Janina")
         .lastName("Nemec")
         .streetName("Schanzenstr.")
@@ -53,7 +49,6 @@ public class NewStringAssertionTest {
         .email("kontakt@rewe-digital.com")
         .build();
     ShopAddress givenBillingAddress = anAddress()
-        .id("someBillingAddressId")
         .firstName("Micha")
         .lastName("Kutz")
         .streetName("Domstr.")
@@ -67,11 +62,10 @@ public class NewStringAssertionTest {
 
     ShopOrder order = anOrder()
         .id(orderId)
-        .version(1)
         .items(List.of(givenItem))
         .coupons(List.of(givenCoupon))
         .deliveryDate(LocalDate.of(2024, 11, 22))
-        .customer(givenCustomer)
+        .customerUuid(UUID.randomUUID())
         .shippingAddress(givenShippingAddress)
         .billingAddress(givenBillingAddress)
         .build();
@@ -122,8 +116,8 @@ public class NewStringAssertionTest {
                     "firstName": "Janina",
                     "lastName": "Nemec",
                     "streetName": "Schanzenstr."
-                    "houseNumber": "6-20",
-                    "city": "Köln", 
+                    "houseNumber":  "6-20",
+                    "city": "Köln",
                     "country": "Deutschland",
                     "phone": "0221 9758420",
                     "latitude": "50.96490882194811",

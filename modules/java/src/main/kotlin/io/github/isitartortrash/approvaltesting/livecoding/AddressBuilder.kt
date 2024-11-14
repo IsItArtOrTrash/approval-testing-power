@@ -1,7 +1,6 @@
 package io.github.isitartortrash.approvaltesting.livecoding
 
 class AddressBuilder {
-    private var id: String? = null
     private var firstName: String? = null
     private var lastName: String? = null
     private var streetName: String? = null
@@ -11,11 +10,6 @@ class AddressBuilder {
     private var country: String? = null
     private var phone: String? = null
     private var email: String? = null
-
-    fun id(id: String?): AddressBuilder {
-        this.id = id
-        return this
-    }
 
     fun firstName(firstName: String?): AddressBuilder {
         this.firstName = firstName
@@ -64,7 +58,6 @@ class AddressBuilder {
 
     fun build(): ShopAddress {
         return ShopAddress(
-            id = id!!,
             firstName = firstName!!,
             lastName = lastName!!,
             streetName = streetName!!,

@@ -1,7 +1,9 @@
 package io.github.isitartortrash.approvaltesting;
 
-record Address(
-    String id,
+import lombok.Builder;
+
+@Builder
+record IncomingAddress(
     String firstName,
     String lastName,
     String streetName,
@@ -9,8 +11,6 @@ record Address(
     String city,
     String country,
     String phone,
-    String latitude,
-    String longitude,
     String email,
     String postalCode) {
 }

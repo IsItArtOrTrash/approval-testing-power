@@ -2,26 +2,20 @@ package io.github.isitartortrash.approvaltesting.livecoding
 
 class PriceBuilder {
     private var value: Int? = null
-    private var monetaryUnit: String? = null
-    private var currency: String? = null
+    private var currency: Currency? = null
 
     fun value(value: Int): PriceBuilder {
         this.value = value
         return this
     }
 
-    fun monetaryUnit(monetaryUnit: String?): PriceBuilder {
-        this.monetaryUnit = monetaryUnit
-        return this
-    }
-
-    fun currency(currency: String?): PriceBuilder {
+    fun currency(currency: Currency): PriceBuilder {
         this.currency = currency
         return this
     }
 
     fun build(): ShopPrice {
-        return ShopPrice(value!!, monetaryUnit!!, currency!!)
+        return ShopPrice(value!!, currency!!)
     }
 
     companion object {

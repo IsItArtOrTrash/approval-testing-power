@@ -1,10 +1,15 @@
 package io.github.isitartortrash.approvaltesting.livecoding
 
-import java.time.LocalDate
+import io.github.isitartortrash.approvaltesting.livecoding.Currency.EUR
 import java.time.LocalDateTime
-import java.time.LocalTime
+import java.util.UUID
 
-fun ShopAddress.enrich(latitude: String, longitude: String, status: CustomerStatus) = AddressResult(
+fun ShopAddress.enrich(
+    latitude: String,
+    longitude: String,
+    status: CustomerStatus,
+    id: String = UUID.randomUUID().toString()
+) = AddressResult(
     id = id,
     firstName = firstName,
     lastName = lastName,
@@ -20,16 +25,21 @@ fun ShopAddress.enrich(latitude: String, longitude: String, status: CustomerStat
     status = status,
 )
 
-fun ShopCustomer.enrich() = CustomerResult(
-    id = id,
-    firstName = firstName,
-    lastName = lastName,
-)
+fun enrichCustomer(id: UUID): CustomerResult {
+    if (id == UUID.fromString( "9e71d9c1-a066-41e0-a79e-061089110d85")) {
+        return CustomerResult(id = id.toString(), firstName = "REWE", lastName = "Digital")
+    }
+    return CustomerResult(
+        id = id.toString(),
+        firstName = "UNKNOWN",
+        lastName = "UNKNOWN",
+    )
+}
 
 fun ShopPrice.enrich() = PriceResult(
     value = value,
-    monetaryUnit = monetaryUnit,
-    currency = currency
+    monetaryUnit = currency.monetaryUnit,
+    currency = currency.name
 )
 
 fun ShopItem.enrich() = ItemResult(
@@ -47,26 +57,24 @@ fun ShopCoupon.enrich() = CouponResult(
 
 fun ShopOrder.enrich() = OrderResult(
     id = id,
-    version = version,
+    version = 1L,
     items = items.map { it.enrich() },
     coupons = coupons.map { it.enrich() },
-    orderTimeStamp = LocalDateTime.of(
-        LocalDate.of(2024, 7, 19),
-        LocalTime.of(11, 45)
-    ),
+    orderTimeStamp = LocalDateTime.now(),
     deliveryDate = deliveryDate,
     shippingCost = listOf(
         PriceResult(
             value = 500,
-            monetaryUnit = "cent",
-            currency = "EUR"
+            monetaryUnit = EUR.monetaryUnit,
+            currency = EUR.name
         )
     ),
-    customer = customer.enrich(),
+    customer = enrichCustomer(customerUuid),
     shippingAddress = shippingAddress.enrich(
         latitude = "50.96490882194811",
         longitude = "7.014472855463499",
-        status = CustomerStatus.KNOWN_CUSTOMER
+        status = CustomerStatus.KNOWN_CUSTOMER,
+        id = UUID.fromString("1fbbb9b4-dd34-4930-b54e-d896a68ba343").toString()
     ),
     billingAddress = billingAddress.enrich(
         latitude = "50.94603935915518",

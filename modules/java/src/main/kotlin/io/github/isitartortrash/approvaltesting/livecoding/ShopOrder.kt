@@ -3,14 +3,14 @@ package io.github.isitartortrash.approvaltesting.livecoding
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDate
+import java.util.UUID
 
 data class ShopOrder @JsonCreator constructor(
     @JsonProperty("id") val id: String,
-    @JsonProperty("version") val version: Int,
     @JsonProperty("items") val items: List<ShopItem>,
     @JsonProperty("coupons") val coupons: List<ShopCoupon> = emptyList(),
     @JsonProperty("deliveryDate") val deliveryDate: LocalDate,
-    @JsonProperty("customer") val customer: ShopCustomer,
+    @JsonProperty("customerUuid") val customerUuid: UUID,
     @JsonProperty("shippingAddress") val shippingAddress: ShopAddress,
     @JsonProperty("billingAddress") val billingAddress: ShopAddress
 )
@@ -29,18 +29,10 @@ data class ShopCoupon @JsonCreator constructor(
 
 data class ShopPrice @JsonCreator constructor(
     @JsonProperty("value") val value: Int,
-    @JsonProperty("monetaryUnit") val monetaryUnit: String,
-    @JsonProperty("currency") val currency: String
-)
-
-data class ShopCustomer @JsonCreator constructor(
-    @JsonProperty("id") val id: String,
-    @JsonProperty("firstName") val firstName: String,
-    @JsonProperty("lastName") val lastName: String
+    @JsonProperty("currency") val currency: Currency
 )
 
 data class ShopAddress @JsonCreator constructor(
-    @JsonProperty("id") val id: String,
     @JsonProperty("firstName") val firstName: String,
     @JsonProperty("lastName") val lastName: String,
     @JsonProperty("streetName") val streetName: String,
@@ -51,3 +43,8 @@ data class ShopAddress @JsonCreator constructor(
     @JsonProperty("email") val email: String,
     @JsonProperty("postalCode") val postalCode: String
 )
+
+enum class Currency(val monetaryUnit: String) {
+    EUR("cent"),
+    USD("cent");
+}

@@ -1,24 +1,19 @@
 package io.github.isitartortrash.approvaltesting.livecoding
 
 import java.time.LocalDate
+import java.util.UUID
 
 class OrderBuilder {
     private var id: String? = null
-    private var version: Int? = null
     private var shopItems: List<ShopItem>? = null
     private var shopCoupons: List<ShopCoupon> = emptyList()
     private var deliveryDate: LocalDate? = null
-    private var shopCustomer: ShopCustomer? = null
+    private var customerUuid: UUID? = null
     private var shippingShopAddress: ShopAddress? = null
     private var billingShopAddress: ShopAddress? = null
 
     fun id(id: String): OrderBuilder {
         this.id = id
-        return this
-    }
-
-    fun version(version: Int): OrderBuilder {
-        this.version = version
         return this
     }
 
@@ -37,8 +32,8 @@ class OrderBuilder {
         return this
     }
 
-    fun customer(shopCustomer: ShopCustomer): OrderBuilder {
-        this.shopCustomer = shopCustomer
+    fun customerUuid(customerUuid: UUID): OrderBuilder {
+        this.customerUuid = customerUuid
         return this
     }
 
@@ -55,11 +50,10 @@ class OrderBuilder {
     fun build(): ShopOrder {
         return ShopOrder(
             id = id!!,
-            version = version!!,
             items = shopItems!!,
             coupons = shopCoupons,
             deliveryDate = deliveryDate!!,
-            customer = shopCustomer!!,
+            customerUuid = customerUuid!!,
             shippingAddress = shippingShopAddress!!,
             billingAddress = billingShopAddress!!
         )

@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 
 data class OrderResult @JsonCreator constructor(
     @JsonProperty("id") val id: String,
-    @JsonProperty("version") val version: Int,
+    @JsonProperty("version") val version: Long,
     @JsonProperty("items") val items: List<ItemResult>,
     @JsonProperty("coupons") val coupons: List<CouponResult> = emptyList(),
     @JsonProperty("orderTimeStamp") val orderTimeStamp: LocalDateTime,

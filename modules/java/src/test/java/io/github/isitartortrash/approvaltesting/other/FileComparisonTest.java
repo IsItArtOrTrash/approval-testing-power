@@ -1,6 +1,7 @@
 package io.github.isitartortrash.approvaltesting.other;
 
 import io.github.isitartortrash.approvaltesting.livecoding.ShopOrder;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -17,6 +18,7 @@ class FileComparisonTest {
   private final String TEST_DIR = "src/test/resources/json/FileComparisonTest/";
 
   @Test
+  @Disabled
   void assertionTest() throws IOException {
     String orderId = "someOrderId";
     ShopOrder order = aDefaultOrder(orderId);

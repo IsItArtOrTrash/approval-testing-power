@@ -4,10 +4,11 @@ import io.github.isitartortrash.approvaltesting.livecoding.ShopOrder;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 import static io.github.isitartortrash.approvaltesting.livecoding.AddressBuilder.anAddress;
 import static io.github.isitartortrash.approvaltesting.livecoding.CouponBuilder.aCoupon;
-import static io.github.isitartortrash.approvaltesting.livecoding.CustomerBuilder.aCustomer;
+import static io.github.isitartortrash.approvaltesting.livecoding.Currency.EUR;
 import static io.github.isitartortrash.approvaltesting.livecoding.ItemBuilder.anItem;
 import static io.github.isitartortrash.approvaltesting.livecoding.OrderBuilder.anOrder;
 import static io.github.isitartortrash.approvaltesting.livecoding.PriceBuilder.aPrice;
@@ -16,7 +17,6 @@ public class DefaultTestOrderBuilder {
   public static ShopOrder aDefaultOrder(String orderId) {
     return anOrder()
         .id(orderId)
-        .version(1)
         .items(
             List.of(
                 anItem()
@@ -26,8 +26,7 @@ public class DefaultTestOrderBuilder {
                     .price(
                         aPrice()
                             .value(225000)
-                            .monetaryUnit("cent")
-                            .currency("EUR")
+                            .currency(EUR)
                             .build()
                     )
                     .build()
@@ -42,16 +41,9 @@ public class DefaultTestOrderBuilder {
             )
         )
         .deliveryDate(LocalDate.of(2024, 11, 22))
-        .customer(
-            aCustomer()
-                .id("someCustomerId")
-                .firstName("REWE")
-                .lastName("Digital")
-                .build()
-        )
+        .customerUuid(UUID.randomUUID())
         .shippingAddress(
             anAddress()
-                .id("someShippingAddressId")
                 .firstName("Janina")
                 .lastName("Nemec")
                 .streetName("Schanzenstr.")
@@ -65,7 +57,6 @@ public class DefaultTestOrderBuilder {
         )
         .billingAddress(
             anAddress()
-                .id("someBillingAddressId")
                 .firstName("Micha")
                 .lastName("Kutz")
                 .streetName("Domstr.")

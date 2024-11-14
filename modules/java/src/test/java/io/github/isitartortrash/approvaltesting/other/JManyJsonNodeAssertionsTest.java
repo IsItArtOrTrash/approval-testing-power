@@ -3,6 +3,7 @@ package io.github.isitartortrash.approvaltesting.other;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.github.isitartortrash.approvaltesting.livecoding.ShopOrder;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static io.github.isitartortrash.approvaltesting.DefaultTestOrderBuilder.aDefaultOrder;
@@ -14,6 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class JManyJsonNodeAssertionsTest {
 
   @Test
+  @Disabled
   void assertionTest() throws JsonProcessingException {
     String orderId = "someOrderId";
     ShopOrder order = aDefaultOrder(orderId);

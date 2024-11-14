@@ -11,6 +11,8 @@ import com.fasterxml.jackson.databind.json.JsonMapper
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.kotlinModule
+import com.fasterxml.jackson.module.kotlin.readValue
+import io.github.isitartortrash.approvaltesting.IncomingOrder
 
 val jsonMapper: JsonMapper = JsonMapper
     .builder()
@@ -25,13 +27,18 @@ val jsonMapper: JsonMapper = JsonMapper
     .addModule(kotlinModule())
     .build()
 
-val savedOrders = mutableMapOf<String, OrderResult>()
+val savedOrders = mutableMapOf<String, String>()
 
 fun sendIngoingData(shopOrder: ShopOrder) {
-    savedOrders[shopOrder.id] = shopOrder.enrich()
+    savedOrders[shopOrder.id] = jsonMapper.writeValueAsString(shopOrder)
+}
+
+fun sendIngoingData(incomingOrder: IncomingOrder) {
+    savedOrders[incomingOrder.id] = jsonMapper.writeValueAsString(incomingOrder)
 }
 
 fun getOutgoingData(orderId: String): String? {
-    return jsonMapper.writeValueAsString(savedOrders.get(orderId)!!)
+    val incomingOrder : ShopOrder = jsonMapper.readValue(savedOrders[orderId]!!)
+    return jsonMapper.writeValueAsString(incomingOrder.enrich())
 }
 
