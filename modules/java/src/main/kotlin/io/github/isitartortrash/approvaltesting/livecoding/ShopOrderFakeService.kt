@@ -1,6 +1,6 @@
 package io.github.isitartortrash.approvaltesting.livecoding
 
-import io.github.isitartortrash.approvaltesting.livecoding.Currency.EUR
+import io.github.isitartortrash.approvaltesting.Currency.EUR
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -38,7 +38,7 @@ fun enrichCustomer(id: UUID): CustomerResult {
 
 fun ShopPrice.enrich() = PriceResult(
     value = value,
-    monetaryUnit = currency.monetaryUnit,
+    monetaryUnit = currency.getMonetaryUnit(),
     currency = currency.name
 )
 

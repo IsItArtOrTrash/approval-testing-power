@@ -1,6 +1,7 @@
 package io.github.isitartortrash.approvaltesting.workshop;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.github.isitartortrash.approvaltesting.*;
 import io.github.isitartortrash.approvaltesting.livecoding.*;
 import org.junit.jupiter.api.Test;
 
@@ -9,78 +10,68 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import static io.github.isitartortrash.approvaltesting.Currency.EUR;
 import static io.github.isitartortrash.approvaltesting.TestUtils.jsonMapper;
-import static io.github.isitartortrash.approvaltesting.livecoding.AddressBuilder.anAddress;
-import static io.github.isitartortrash.approvaltesting.livecoding.CouponBuilder.aCoupon;
-import static io.github.isitartortrash.approvaltesting.livecoding.Currency.EUR;
 import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.getOutgoingData;
 import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.sendIngoingData;
-import static io.github.isitartortrash.approvaltesting.livecoding.ItemBuilder.anItem;
-import static io.github.isitartortrash.approvaltesting.livecoding.OrderBuilder.anOrder;
-import static io.github.isitartortrash.approvaltesting.livecoding.PriceBuilder.aPrice;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class JManyObjectAssertionsTestNew {
 
   @Test
   void assertionTest() throws JsonProcessingException {
+    // given
     String orderId = "someOrderId";
-    ShopOrder order = anOrder()
+    LocalDate deliveryDate = LocalDate.of(2024, 11, 22);
+    UUID customerUuid = UUID.fromString("9e71d9c1-a066-41e0-a79e-061089110d85");
+
+    IncomingOrder inOrder = IncomingOrder.builder()
         .id(orderId)
-        .items(
-            List.of(
-                anItem()
-                    .id("someItemId")
-                    .name("ATD 3 Conf. Days")
-                    .amount(2)
-                    .price(
-                        aPrice()
-                            .value(225000)
-                            .currency(EUR)
-                            .build()
-                    )
-                    .build()
-            )
-        )
-        .coupons(
-            List.of(
-                aCoupon()
-                    .id("speakerCouponId")
-                    .description("Speaker Coupon")
-                    .build()
-            )
-        )
-        .deliveryDate(LocalDate.of(2024, 11, 22))
-        .customerUuid(UUID.fromString("9e71d9c1-a066-41e0-a79e-061089110d85"))
-        .shippingAddress(
-            anAddress()
-                .firstName("Janina")
-                .lastName("Nemec")
-                .streetName("Schanzenstr.")
-                .houseNumber("6-20")
-                .postalCode("51063")
-                .city("Köln")
-                .country("Deutschland")
-                .phone("0221 9758420")
-                .email("kontakt@rewe-digital.com")
+        .items(List.of(
+            IncomingItem.builder()
+                .id("someItemId")
+                .name("ATD 3 Conf. Days")
+                .amount(2)
+                .price(
+                    IncomingPrice.builder()
+                        .value(225000)
+                        .currency(EUR)
+                        .build()
+                )
                 .build()
-        )
-        .billingAddress(
-            anAddress()
-                .firstName("Micha")
-                .lastName("Kutz")
-                .streetName("Domstr.")
-                .houseNumber("20")
-                .postalCode("50668")
-                .city("Köln")
-                .country("Deutschland")
-                .phone("+49 221 1490")
-                .email("info@rewe-group.com")
-                .build()
-        )
+        ))
+        .coupons(List.of(
+            IncomingCoupon.builder()
+                .id("speakerCouponId")
+                .description("Speaker Coupon")
+                .build()))
+        .deliveryDate(deliveryDate)
+        .customerUuid(customerUuid)
+        .shippingAddress(IncomingAddress.builder()
+            .firstName("Janina")
+            .lastName("Nemec")
+            .streetName("Schanzenstr.")
+            .houseNumber("6-20")
+            .postalCode("51063")
+            .city("Köln")
+            .country("Deutschland")
+            .phone("0221 9758420")
+            .email("kontakt@rewe-digital.com")
+            .build())
+        .billingAddress(IncomingAddress.builder()
+            .firstName("Micha")
+            .lastName("Kutz")
+            .streetName("Domstr.")
+            .houseNumber("20")
+            .postalCode("50668")
+            .city("Köln")
+            .country("Deutschland")
+            .phone("+49 221 1490")
+            .email("info@rewe-group.com")
+            .build())
         .build();
 
-    sendIngoingData(order);
+    sendIngoingData(inOrder);
 
     OrderResult orderResult = jsonMapper.readValue(getOutgoingData(orderId), OrderResult.class);
 
@@ -102,10 +93,10 @@ class JManyObjectAssertionsTestNew {
     assertThat(coupon.getDescription()).isEqualTo("Speaker Coupon");
 
     assertThat(orderResult.getOrderTimeStamp()).isEqualToIgnoringHours(LocalDateTime.now());
-    assertThat(orderResult.getDeliveryDate()).isEqualTo(LocalDate.of(2024, 11, 22));
+    assertThat(orderResult.getDeliveryDate()).isEqualTo(deliveryDate);
 
     CustomerResult customer = orderResult.getCustomer();
-    assertThat(customer.getId()).isEqualTo(order.getCustomerUuid().toString());
+    assertThat(customer.getId()).isEqualTo(inOrder.customerUuid().toString());
     assertThat(customer.getFirstName()).isEqualTo("REWE");
     assertThat(customer.getLastName()).isEqualTo("Digital");
 

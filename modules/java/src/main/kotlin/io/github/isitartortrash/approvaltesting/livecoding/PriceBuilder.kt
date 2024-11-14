@@ -1,5 +1,7 @@
 package io.github.isitartortrash.approvaltesting.livecoding
 
+import io.github.isitartortrash.approvaltesting.Currency
+
 class PriceBuilder {
     private var value: Int? = null
     private var currency: Currency? = null

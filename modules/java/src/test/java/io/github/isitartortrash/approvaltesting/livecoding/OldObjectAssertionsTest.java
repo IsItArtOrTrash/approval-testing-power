@@ -8,10 +8,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import static io.github.isitartortrash.approvaltesting.Currency.EUR;
 import static io.github.isitartortrash.approvaltesting.TestUtils.jsonMapper;
 import static io.github.isitartortrash.approvaltesting.livecoding.AddressBuilder.anAddress;
 import static io.github.isitartortrash.approvaltesting.livecoding.CouponBuilder.aCoupon;
-import static io.github.isitartortrash.approvaltesting.livecoding.Currency.EUR;
 import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.getOutgoingData;
 import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.sendIngoingData;
 import static io.github.isitartortrash.approvaltesting.livecoding.ItemBuilder.anItem;

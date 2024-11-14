@@ -2,6 +2,7 @@ package io.github.isitartortrash.approvaltesting.livecoding
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import io.github.isitartortrash.approvaltesting.Currency
 import java.time.LocalDate
 import java.util.UUID
 
@@ -43,8 +44,3 @@ data class ShopAddress @JsonCreator constructor(
     @JsonProperty("email") val email: String,
     @JsonProperty("postalCode") val postalCode: String
 )
-
-enum class Currency(val monetaryUnit: String) {
-    EUR("cent"),
-    USD("cent");
-}

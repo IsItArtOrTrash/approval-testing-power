@@ -3,7 +3,7 @@ package io.github.isitartortrash.approvaltesting;
 import lombok.Builder;
 
 @Builder
-record IncomingAddress(
+public record IncomingAddress(
     String firstName,
     String lastName,
     String streetName,
