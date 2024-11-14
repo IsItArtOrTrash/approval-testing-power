@@ -4,8 +4,8 @@ import io.github.isitartortrash.approvaltesting.livecoding.ShopOrder;
 import org.junit.jupiter.api.Test;
 
 import static io.github.isitartortrash.approvaltesting.DefaultTestOrderBuilder.aDefaultOrder;
-import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.anOrderWasProcessed;
-import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.callRestEndpoint;
+import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.getOutgoingData;
+import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.sendIngoingData;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class JLongJsonStringAssertionTest {
@@ -15,9 +15,9 @@ public class JLongJsonStringAssertionTest {
     String orderId = "someOrderId";
     ShopOrder order = aDefaultOrder(orderId);
 
-    anOrderWasProcessed(order);
+    sendIngoingData(order);
 
-    String result = callRestEndpoint(orderId);
+    String result = getOutgoingData(orderId);
 
     assertThat(result)
         .isEqualToIgnoringWhitespace(

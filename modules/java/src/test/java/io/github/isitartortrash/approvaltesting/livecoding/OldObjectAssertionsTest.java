@@ -10,8 +10,8 @@ import static io.github.isitartortrash.approvaltesting.TestUtils.jsonMapper;
 import static io.github.isitartortrash.approvaltesting.livecoding.AddressBuilder.anAddress;
 import static io.github.isitartortrash.approvaltesting.livecoding.CouponBuilder.aCoupon;
 import static io.github.isitartortrash.approvaltesting.livecoding.CustomerBuilder.aCustomer;
-import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.anOrderWasProcessed;
-import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.callRestEndpoint;
+import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.getOutgoingData;
+import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.sendIngoingData;
 import static io.github.isitartortrash.approvaltesting.livecoding.ItemBuilder.anItem;
 import static io.github.isitartortrash.approvaltesting.livecoding.OrderBuilder.anOrder;
 import static io.github.isitartortrash.approvaltesting.livecoding.PriceBuilder.aPrice;
@@ -78,9 +78,9 @@ class OldObjectAssertionsTest {
         .billingAddress(givenBillingAddress)
         .build();
 
-    anOrderWasProcessed(order);
+    sendIngoingData(order);
 
-    OrderResult orderResult = jsonMapper.readValue(callRestEndpoint(orderId), OrderResult.class);
+    OrderResult orderResult = jsonMapper.readValue(getOutgoingData(orderId), OrderResult.class);
 
     assertThat(orderResult.getId()).isEqualTo("someOrderId");
     assertThat(orderResult.getVersion()).isEqualTo(1);

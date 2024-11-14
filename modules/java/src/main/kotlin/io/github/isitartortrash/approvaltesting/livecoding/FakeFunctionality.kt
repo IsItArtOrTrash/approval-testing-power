@@ -27,16 +27,11 @@ val jsonMapper: JsonMapper = JsonMapper
 
 val savedOrders = mutableMapOf<String, OrderResult>()
 
-fun anOrderWasProcessed(shopOrder: ShopOrder) {
+fun sendIngoingData(shopOrder: ShopOrder) {
     savedOrders[shopOrder.id] = shopOrder.enrich()
 }
 
-fun postRestEndpoint(shopOrderString: String) {
-    val shopOrder = jsonMapper.readValue<ShopOrder>(shopOrderString, ShopOrder::class.java)
-    anOrderWasProcessed(shopOrder)
-}
-
-fun callRestEndpoint(orderId: String): String? {
+fun getOutgoingData(orderId: String): String? {
     return jsonMapper.writeValueAsString(savedOrders.get(orderId)!!)
 }
 

@@ -8,8 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import static io.github.isitartortrash.approvaltesting.DefaultTestOrderBuilder.aDefaultOrder;
-import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.anOrderWasProcessed;
-import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.callRestEndpoint;
+import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.getOutgoingData;
+import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.sendIngoingData;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class FileComparisonTest {
@@ -21,9 +21,9 @@ class FileComparisonTest {
     String orderId = "someOrderId";
     ShopOrder order = aDefaultOrder(orderId);
 
-    anOrderWasProcessed(order);
+    sendIngoingData(order);
 
-    String result = callRestEndpoint(orderId);
+    String result = getOutgoingData(orderId);
 
     String expected = new String(Files.readAllBytes(Paths.get(TEST_DIR + "expectedOrder.json")));
     assertThat(result).isEqualToIgnoringWhitespace(expected);

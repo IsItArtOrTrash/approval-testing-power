@@ -8,8 +8,8 @@ import java.util.List;
 import static io.github.isitartortrash.approvaltesting.livecoding.AddressBuilder.anAddress;
 import static io.github.isitartortrash.approvaltesting.livecoding.CouponBuilder.aCoupon;
 import static io.github.isitartortrash.approvaltesting.livecoding.CustomerBuilder.aCustomer;
-import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.anOrderWasProcessed;
-import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.callRestEndpoint;
+import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.getOutgoingData;
+import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.sendIngoingData;
 import static io.github.isitartortrash.approvaltesting.livecoding.ItemBuilder.anItem;
 import static io.github.isitartortrash.approvaltesting.livecoding.OrderBuilder.anOrder;
 import static io.github.isitartortrash.approvaltesting.livecoding.PriceBuilder.aPrice;
@@ -76,9 +76,9 @@ public class NewStringAssertionTest {
         .billingAddress(givenBillingAddress)
         .build();
 
-    anOrderWasProcessed(order);
+    sendIngoingData(order);
 
-    String result = callRestEndpoint(orderId);
+    String result = getOutgoingData(orderId);
 
     assertThat(result)
         .isEqualToIgnoringWhitespace(

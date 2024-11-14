@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 
 import static io.github.isitartortrash.approvaltesting.DefaultTestOrderBuilder.aDefaultOrder;
 import static io.github.isitartortrash.approvaltesting.TestUtils.jsonMapper;
-import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.anOrderWasProcessed;
-import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.callRestEndpoint;
+import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.getOutgoingData;
+import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.sendIngoingData;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class JManyObjectAssertionsTest {
@@ -20,9 +20,9 @@ class JManyObjectAssertionsTest {
     String orderId = "someOrderId";
     ShopOrder order = aDefaultOrder(orderId);
 
-    anOrderWasProcessed(order);
+    sendIngoingData(order);
 
-    OrderResult orderResult = jsonMapper.readValue(callRestEndpoint(orderId), OrderResult.class);
+    OrderResult orderResult = jsonMapper.readValue(getOutgoingData(orderId), OrderResult.class);
 
     assertThat(orderResult.getId()).isEqualTo("someOrderId");
     assertThat(orderResult.getVersion()).isEqualTo(1);

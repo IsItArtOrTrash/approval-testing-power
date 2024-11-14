@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import static io.github.isitartortrash.approvaltesting.DefaultTestOrderBuilder.aDefaultOrder;
 import static io.github.isitartortrash.approvaltesting.TestUtils.jsonMapper;
-import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.anOrderWasProcessed;
-import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.callRestEndpoint;
+import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.getOutgoingData;
+import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.sendIngoingData;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class JManyJsonNodeAssertionsTest {
@@ -18,9 +18,9 @@ class JManyJsonNodeAssertionsTest {
     String orderId = "someOrderId";
     ShopOrder order = aDefaultOrder(orderId);
 
-    anOrderWasProcessed(order);
+    sendIngoingData(order);
 
-    JsonNode result = jsonMapper.readTree(callRestEndpoint(orderId));
+    JsonNode result = jsonMapper.readTree(getOutgoingData(orderId));
 
     assertThat(result.get("id").asText()).isEqualTo("someOrderId");
     assertThat(result.get("version").asText()).isEqualTo("1");
