@@ -4,10 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import io.github.isitartortrash.approvaltesting.incoming.IncomingCoupon;
-import io.github.isitartortrash.approvaltesting.incoming.IncomingItem;
-import io.github.isitartortrash.approvaltesting.incoming.IncomingOrder;
-import io.github.isitartortrash.approvaltesting.incoming.IncomingPrice;
+import io.github.isitartortrash.approvaltesting.incoming.*;
 import io.github.isitartortrash.approvaltesting.outgoing.*;
 
 import java.time.Clock;
@@ -77,7 +74,7 @@ public class FakeOrderService implements OrderService {
                 .currency(EUR.name())
                 .build()
         ))
-        .customer(enrichCustomer(incomingOrder.customerUuid())) // TODO enrich
+        .customer(enrichCustomer(incomingOrder.customerUuid()))
         .shippingAddress(null)
 //    shippingAddress = shippingAddress.enrich(
 //        latitude = "50.96490882194811",
@@ -120,26 +117,28 @@ public class FakeOrderService implements OrderService {
   }
 
 
-//  fun IncomingAddress.enrich(
-//      latitude: String,
-//      longitude: String,
-//      status: CustomerStatus,
-//      id: String = UUID.randomUUID().toString()
-//) = AddressResult(
-//      id = id,
-//      firstName = firstName,
-//      lastName = lastName,
-//      streetName = streetName,
-//      houseNumber = houseNumber,
-//      city = city,
-//      country = country,
-//      phone = phone,
-//      latitude = latitude,
-//      longitude = longitude,
-//      email = email,
-//      postalCode = postalCode,
-//      status = status,
-//      )
+  private OutgoingAddress enrichAddress(
+      IncomingAddress incomingAddress,
+      String latitude,
+      String longitude,
+      CustomerStatus status,
+      String id) {
+    return OutgoingAddress.builder()
+        .id(id)
+        .firstName(incomingAddress.firstName())
+        .lastName(incomingAddress.lastName())
+        .streetName(incomingAddress.streetName())
+        .houseNumber(incomingAddress.houseNumber())
+        .postalCode(incomingAddress.postalCode())
+        .city(incomingAddress.city())
+        .country(incomingAddress.country())
+        .phone(incomingAddress.phone())
+        .email(incomingAddress.email())
+        .latitude(latitude)
+        .longitude(longitude)
+        .status(status)
+        .build();
+  }
 
   private OutgoingCustomer enrichCustomer(UUID id) {
     if (id == UUID.fromString( "9e71d9c1-a066-41e0-a79e-061089110d85")) {
