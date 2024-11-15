@@ -56,22 +56,18 @@ public class FakeOrderService implements OrderService {
   public String getOutgoingData(String orderId) {
     try {
       final IncomingOrder incomingOrder = jsonMapper.readValue(savedOrders.get(orderId), IncomingOrder.class);
-      return jsonMapper.writeValueAsString(enrichIncomingOrder(incomingOrder, LocalDateTime.now(clock)));
+      return jsonMapper.writeValueAsString(enrichOrder(incomingOrder, LocalDateTime.now(clock)));
     } catch (JsonProcessingException e) {
       throw new RuntimeException(e);
     }
   }
 
-  private io.github.isitartortrash.approvaltesting.outgoing.OutgoingOrder enrichIncomingOrder(IncomingOrder incomingOrder, LocalDateTime now) {
-    return null;
-  }
-
-  private OutgoingOrder enrichIncomingOrder(IncomingOrder incomingOrder, LocalDateTime orderTimeStamp) {
+  private OutgoingOrder enrichOrder(IncomingOrder incomingOrder, LocalDateTime orderTimeStamp) {
     return io.github.isitartortrash.approvaltesting.outgoing.OutgoingOrder.builder()
         .id(incomingOrder.id())
         .version(1L)
-        .items(Collections.emptyList()) // TODO enrich
-        .coupons(Collections.emptyList()) // TODO enrich
+        .items(incomingOrder.items().stream().map(this::enrichItem).toList())
+        .coupons(incomingOrder.coupons().stream().map(this::enrichCoupon).toList())
         .orderTimeStamp(orderTimeStamp)
         .deliveryDate(incomingOrder.deliveryDate())
         .shippingCost(List.of(
@@ -98,7 +94,7 @@ public class FakeOrderService implements OrderService {
         .build();
   }
 
-  private OutgoingItem enrichIncomingItem(IncomingItem incomingItem) {
+  private OutgoingItem enrichItem(IncomingItem incomingItem) {
     return OutgoingItem.builder()
         .id(incomingItem.id())
         .name(incomingItem.name())
