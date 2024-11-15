@@ -4,16 +4,23 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import io.github.isitartortrash.approvaltesting.incoming.IncomingCoupon;
+import io.github.isitartortrash.approvaltesting.incoming.IncomingItem;
 import io.github.isitartortrash.approvaltesting.incoming.IncomingOrder;
+import io.github.isitartortrash.approvaltesting.incoming.IncomingPrice;
+import io.github.isitartortrash.approvaltesting.outgoing.*;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static com.fasterxml.jackson.databind.DeserializationFeature.*;
 import static com.fasterxml.jackson.databind.MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS;
 import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS;
+import static io.github.isitartortrash.approvaltesting.incoming.Currency.EUR;
 
 public class FakeOrderService implements OrderService {
 
@@ -59,92 +66,99 @@ public class FakeOrderService implements OrderService {
     return null;
   }
 
-/*  private OutgoingOrder enrichIncomingOrder(IncomingOrder incomingOrder, LocalDateTime orderTimeStamp) {
+  private OutgoingOrder enrichIncomingOrder(IncomingOrder incomingOrder, LocalDateTime orderTimeStamp) {
     return io.github.isitartortrash.approvaltesting.outgoing.OutgoingOrder.builder()
-        .build()(
-        id = id,
-        version = 1L,
-        items = items.map {
-      it.enrich()
-    },
-    coupons = coupons.map {
-      it.enrich()
-    },
-    orderTimeStamp = orderTimeStamp,
-        deliveryDate = deliveryDate,
-        shippingCost = listOf(
-            PriceResult(
-                value = 500,
-                monetaryUnit = EUR.monetaryUnit,
-                currency = EUR.name
-            )
-        ),
-        customer = enrichCustomer(customerUuid),
-        shippingAddress = shippingAddress.enrich(
-            latitude = "50.96490882194811",
-            longitude = "7.014472855463499",
-            status = CustomerStatus.KNOWN_CUSTOMER,
-            id = UUID.fromString("1fbbb9b4-dd34-4930-b54e-d896a68ba343").toString()
-        ),
-        billingAddress = billingAddress.enrich(
-            latitude = "50.94603935915518",
-            longitude = "6.959302840118697",
-            status = CustomerStatus.NEW_CUSTOMER
-        ),
-        )
+        .id(incomingOrder.id())
+        .version(1L)
+        .items(Collections.emptyList()) // TODO enrich
+        .coupons(Collections.emptyList()) // TODO enrich
+        .orderTimeStamp(orderTimeStamp)
+        .deliveryDate(incomingOrder.deliveryDate())
+        .shippingCost(List.of(
+            OutgoingPrice.builder()
+                .value(500)
+                .monetaryUnit(EUR.getMonetaryUnit())
+                .currency(EUR.name())
+                .build()
+        ))
+        .customer(enrichCustomer(incomingOrder.customerUuid())) // TODO enrich
+        .shippingAddress(null)
+//    shippingAddress = shippingAddress.enrich(
+//        latitude = "50.96490882194811",
+//        longitude = "7.014472855463499",
+//        status = CustomerStatus.KNOWN_CUSTOMER,
+//        id = UUID.fromString("1fbbb9b4-dd34-4930-b54e-d896a68ba343").toString()
+//    )
+        .billingAddress(null)
+//    billingAddress = billingAddress.enrich(
+//            latitude = "50.94603935915518",
+//            longitude = "6.959302840118697",
+//            status = CustomerStatus.NEW_CUSTOMER
+//        )
+        .build();
   }
 
-  fun IncomingAddress.enrich(
-      latitude: String,
-      longitude: String,
-      status: CustomerStatus,
-      id: String = UUID.randomUUID().toString()
-) = AddressResult(
-      id = id,
-      firstName = firstName,
-      lastName = lastName,
-      streetName = streetName,
-      houseNumber = houseNumber,
-      city = city,
-      country = country,
-      phone = phone,
-      latitude = latitude,
-      longitude = longitude,
-      email = email,
-      postalCode = postalCode,
-      status = status,
-      )
+  private OutgoingItem enrichIncomingItem(IncomingItem incomingItem) {
+    return OutgoingItem.builder()
+        .id(incomingItem.id())
+        .name(incomingItem.name())
+        .amount(incomingItem.amount())
+        .price(enrichPrice(incomingItem.price()))
+        .build();
+  }
 
-  fun enrichCustomer(id: UUID): CustomerResult {
+  private OutgoingPrice enrichPrice(IncomingPrice incomingPrice) {
+    return OutgoingPrice.builder()
+        .value(incomingPrice.value())
+        .monetaryUnit(incomingPrice.currency().getMonetaryUnit())
+        .currency(incomingPrice.currency().name())
+        .build();
+  }
+
+  private OutgoingCoupon enrichCoupon(IncomingCoupon incomingCoupon) {
+    return  OutgoingCoupon.builder()
+        .id(incomingCoupon.id())
+        .description(incomingCoupon.description())
+        .reducedRateInPercentage("speakerCouponId".equals(incomingCoupon.id()) ? 100 : 10)
+        .build();
+  }
+
+
+//  fun IncomingAddress.enrich(
+//      latitude: String,
+//      longitude: String,
+//      status: CustomerStatus,
+//      id: String = UUID.randomUUID().toString()
+//) = AddressResult(
+//      id = id,
+//      firstName = firstName,
+//      lastName = lastName,
+//      streetName = streetName,
+//      houseNumber = houseNumber,
+//      city = city,
+//      country = country,
+//      phone = phone,
+//      latitude = latitude,
+//      longitude = longitude,
+//      email = email,
+//      postalCode = postalCode,
+//      status = status,
+//      )
+
+  private OutgoingCustomer enrichCustomer(UUID id) {
     if (id == UUID.fromString( "9e71d9c1-a066-41e0-a79e-061089110d85")) {
-      return CustomerResult(id = id.toString(), firstName = "REWE", lastName = "Digital")
+      return OutgoingCustomer.builder()
+          .id(id.toString())
+          .firstName("REWE")
+          .lastName("Digital")
+          .build();
     }
-    return CustomerResult(
-        id = id.toString(),
-        firstName = "UNKNOWN",
-        lastName = "UNKNOWN",
-        )
+    return OutgoingCustomer.builder()
+        .id(id.toString())
+        .firstName("UNKNOWN")
+        .lastName("UNKNOWN")
+        .build();
   }
-
-  fun IncomingPrice.enrich() = PriceResult(
-      value = value,
-      monetaryUnit = currency.getMonetaryUnit(),
-  currency = currency.name
-)
-
-  fun IncomingItem.enrich() = ItemResult(
-      id = id,
-      name = name,
-      amount = amount,
-      price = price.enrich(),
-)
-
-  fun IncomingCoupon.enrich() = CouponResult(
-      id = id,
-      description = description,
-      reducedRateInPercentage = if (id == "speakerCouponId") 100 else 10
-      )*/
-
 
 }
 
