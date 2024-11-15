@@ -75,19 +75,24 @@ public class FakeOrderService implements OrderService {
                 .build()
         ))
         .customer(enrichCustomer(incomingOrder.customerUuid()))
-        .shippingAddress(null)
-//    shippingAddress = shippingAddress.enrich(
-//        latitude = "50.96490882194811",
-//        longitude = "7.014472855463499",
-//        status = CustomerStatus.KNOWN_CUSTOMER,
-//        id = UUID.fromString("1fbbb9b4-dd34-4930-b54e-d896a68ba343").toString()
-//    )
-        .billingAddress(null)
-//    billingAddress = billingAddress.enrich(
-//            latitude = "50.94603935915518",
-//            longitude = "6.959302840118697",
-//            status = CustomerStatus.NEW_CUSTOMER
-//        )
+        .shippingAddress(
+            enrichAddress(
+                incomingOrder.shippingAddress(),
+                "50.96490882194811",
+                "7.014472855463499",
+                CustomerStatus.KNOWN_CUSTOMER,
+                UUID.fromString("1fbbb9b4-dd34-4930-b54e-d896a68ba343")
+            )
+        )
+        .billingAddress(
+            enrichAddress(
+                incomingOrder.billingAddress(),
+                "50.94603935915518",
+                "6.959302840118697",
+                CustomerStatus.NEW_CUSTOMER,
+                UUID.randomUUID()
+            )
+        )
         .build();
   }
 
@@ -109,7 +114,7 @@ public class FakeOrderService implements OrderService {
   }
 
   private OutgoingCoupon enrichCoupon(IncomingCoupon incomingCoupon) {
-    return  OutgoingCoupon.builder()
+    return OutgoingCoupon.builder()
         .id(incomingCoupon.id())
         .description(incomingCoupon.description())
         .reducedRateInPercentage("speakerCouponId".equals(incomingCoupon.id()) ? 100 : 10)
@@ -122,9 +127,9 @@ public class FakeOrderService implements OrderService {
       String latitude,
       String longitude,
       CustomerStatus status,
-      String id) {
+      UUID id) {
     return OutgoingAddress.builder()
-        .id(id)
+        .id(id.toString())
         .firstName(incomingAddress.firstName())
         .lastName(incomingAddress.lastName())
         .streetName(incomingAddress.streetName())
@@ -141,7 +146,7 @@ public class FakeOrderService implements OrderService {
   }
 
   private OutgoingCustomer enrichCustomer(UUID id) {
-    if (id == UUID.fromString( "9e71d9c1-a066-41e0-a79e-061089110d85")) {
+    if (id == UUID.fromString("9e71d9c1-a066-41e0-a79e-061089110d85")) {
       return OutgoingCustomer.builder()
           .id(id.toString())
           .firstName("REWE")
