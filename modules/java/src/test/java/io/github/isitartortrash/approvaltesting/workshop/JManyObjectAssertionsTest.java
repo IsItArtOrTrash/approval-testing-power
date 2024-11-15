@@ -5,6 +5,7 @@ import io.github.isitartortrash.approvaltesting.FakeOrderService;
 import io.github.isitartortrash.approvaltesting.OrderService;
 import io.github.isitartortrash.approvaltesting.incoming.*;
 import io.github.isitartortrash.approvaltesting.outgoing.*;
+import io.github.isitartortrash.approvaltesting.util.TestBase;
 import org.junit.jupiter.api.Test;
 
 import java.time.Clock;
@@ -14,15 +15,13 @@ import java.util.List;
 import java.util.UUID;
 
 import static io.github.isitartortrash.approvaltesting.incoming.Currency.EUR;
-import static io.github.isitartortrash.approvaltesting.TestUtils.jsonMapper;
+import static io.github.isitartortrash.approvaltesting.util.TestUtils.jsonMapper;
 import static io.github.isitartortrash.approvaltesting.outgoing.CustomerStatus.KNOWN_CUSTOMER;
 import static io.github.isitartortrash.approvaltesting.outgoing.CustomerStatus.NEW_CUSTOMER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
-class JManyObjectAssertionsTest {
-
-  private OrderService orderService = new FakeOrderService(mock(Clock.class));
+class JManyObjectAssertionsTest extends TestBase {
 
   @Test
   void assertionTest() throws JsonProcessingException {

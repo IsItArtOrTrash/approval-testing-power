@@ -2,21 +2,15 @@ package io.github.isitartortrash.approvaltesting.other;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import io.github.isitartortrash.approvaltesting.FakeOrderService;
 import io.github.isitartortrash.approvaltesting.incoming.IncomingOrder;
-import io.github.isitartortrash.approvaltesting.OrderService;
+import io.github.isitartortrash.approvaltesting.util.TestBase;
 import org.junit.jupiter.api.Test;
 
-import java.time.Clock;
-
-import static io.github.isitartortrash.approvaltesting.DefaultTestOrderBuilder.aDefaultOrder;
-import static io.github.isitartortrash.approvaltesting.TestUtils.jsonMapper;
+import static io.github.isitartortrash.approvaltesting.util.DefaultTestOrderBuilder.aDefaultOrder;
+import static io.github.isitartortrash.approvaltesting.util.TestUtils.jsonMapper;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
-class JManyJsonNodeAssertionsTest {
-
-  private OrderService orderService = new FakeOrderService(mock(Clock.class));
+class JManyJsonNodeAssertionsTest extends TestBase {
 
   @Test
   void assertionTest() throws JsonProcessingException {

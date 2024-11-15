@@ -9,10 +9,7 @@ import io.github.isitartortrash.approvaltesting.outgoing.*;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static com.fasterxml.jackson.databind.DeserializationFeature.*;
 import static com.fasterxml.jackson.databind.MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS;
@@ -38,7 +35,7 @@ public class FakeOrderService implements OrderService {
     this.clock = clock;
   }
 
-  private Map<String, String> savedOrders = Collections.emptyMap();
+  private final Map<String, String> savedOrders = new HashMap<>();
 
   @Override
   public void sendIncomingData(IncomingOrder incomingOrder) {
@@ -121,7 +118,6 @@ public class FakeOrderService implements OrderService {
         .build();
   }
 
-
   private OutgoingAddress enrichAddress(
       IncomingAddress incomingAddress,
       String latitude,
@@ -146,7 +142,7 @@ public class FakeOrderService implements OrderService {
   }
 
   private OutgoingCustomer enrichCustomer(UUID id) {
-    if (id == UUID.fromString("9e71d9c1-a066-41e0-a79e-061089110d85")) {
+    if (UUID.fromString("9e71d9c1-a066-41e0-a79e-061089110d85").equals(id)) {
       return OutgoingCustomer.builder()
           .id(id.toString())
           .firstName("REWE")

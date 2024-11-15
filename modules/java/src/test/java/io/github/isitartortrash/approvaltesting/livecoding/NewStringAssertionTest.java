@@ -1,23 +1,18 @@
 package io.github.isitartortrash.approvaltesting.livecoding;
 
-import io.github.isitartortrash.approvaltesting.FakeOrderService;
-import io.github.isitartortrash.approvaltesting.OrderService;
 import io.github.isitartortrash.approvaltesting.incoming.*;
+import io.github.isitartortrash.approvaltesting.util.TestBase;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.time.Clock;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
 import static io.github.isitartortrash.approvaltesting.incoming.Currency.EUR;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
-public class NewStringAssertionTest {
-
-  private OrderService orderService = new FakeOrderService(mock(Clock.class));
+public class NewStringAssertionTest extends TestBase {
 
   @Test
   @Disabled

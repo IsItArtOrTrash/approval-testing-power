@@ -11,9 +11,9 @@ public record OutgoingAddress(
     String houseNumber,
     String city,
     String country,
+    String phone,
     String latitude,
     String longitude,
-    String phone,
     String email,
     String postalCode,
     CustomerStatus status
