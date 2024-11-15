@@ -50,7 +50,7 @@
     "status": "known_customer"
   },
   "billingAddress": {
-    "id": "5346d399-e835-4683-94c9-bd713f0890df",
+    "id": "[randomBillingAddressId]",
     "firstName": "Micha",
     "lastName": "Kutz",
     "streetName": "Domstr.",

@@ -1,7 +1,6 @@
 package io.github.isitartortrash.approvaltesting.util;
 
 import io.github.isitartortrash.approvaltesting.FakeOrderService;
-import io.github.isitartortrash.approvaltesting.OrderService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,6 +19,8 @@ import static org.mockito.BDDMockito.given;
 @MockitoSettings(strictness = Strictness.LENIENT)
 public class TestBase {
 
+  public final String TEST_DIR = "src/test/resources/json/FileComparisonTest/";
+
   @Mock
   public Clock clock;
 
@@ -33,4 +34,5 @@ public class TestBase {
     given(clock.getZone()).willReturn(ZoneId.systemDefault());
     given(clock.millis()).willReturn(now.toEpochMilli());
   }
+
 }
