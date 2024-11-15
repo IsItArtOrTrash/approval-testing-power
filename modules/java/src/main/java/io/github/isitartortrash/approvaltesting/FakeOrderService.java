@@ -1,0 +1,150 @@
+package io.github.isitartortrash.approvaltesting;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import io.github.isitartortrash.approvaltesting.incoming.IncomingOrder;
+
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Map;
+
+import static com.fasterxml.jackson.databind.DeserializationFeature.*;
+import static com.fasterxml.jackson.databind.MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS;
+import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS;
+
+public class FakeOrderService implements OrderService {
+
+  private final Clock clock;
+  private final JsonMapper jsonMapper = JsonMapper
+      .builder()
+      .disable(WRITE_DATES_AS_TIMESTAMPS)
+      .disable(ADJUST_DATES_TO_CONTEXT_TIME_ZONE)
+      .disable(FAIL_ON_UNKNOWN_PROPERTIES)
+      .enable(ACCEPT_CASE_INSENSITIVE_ENUMS)
+      .enable(READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE)
+      .enable(FAIL_ON_MISSING_CREATOR_PROPERTIES, FAIL_ON_NULL_FOR_PRIMITIVES)
+      .addModule(new JavaTimeModule())
+      .addModule(new Jdk8Module())
+      .build();
+
+  public FakeOrderService(Clock clock) {
+    this.clock = clock;
+  }
+
+  private Map<String, String> savedOrders = Collections.emptyMap();
+
+  @Override
+  public void sendIncomingData(IncomingOrder incomingOrder) {
+    try {
+      savedOrders.put(incomingOrder.id(), jsonMapper.writeValueAsString(incomingOrder));
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
+  public String getOutgoingData(String orderId) {
+    try {
+      final IncomingOrder incomingOrder = jsonMapper.readValue(savedOrders.get(orderId), IncomingOrder.class);
+      return jsonMapper.writeValueAsString(enrichIncomingOrder(incomingOrder, LocalDateTime.now(clock)));
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private io.github.isitartortrash.approvaltesting.outgoing.OutgoingOrder enrichIncomingOrder(IncomingOrder incomingOrder, LocalDateTime now) {
+    return null;
+  }
+
+/*  private OutgoingOrder enrichIncomingOrder(IncomingOrder incomingOrder, LocalDateTime orderTimeStamp) {
+    return io.github.isitartortrash.approvaltesting.outgoing.OutgoingOrder.builder()
+        .build()(
+        id = id,
+        version = 1L,
+        items = items.map {
+      it.enrich()
+    },
+    coupons = coupons.map {
+      it.enrich()
+    },
+    orderTimeStamp = orderTimeStamp,
+        deliveryDate = deliveryDate,
+        shippingCost = listOf(
+            PriceResult(
+                value = 500,
+                monetaryUnit = EUR.monetaryUnit,
+                currency = EUR.name
+            )
+        ),
+        customer = enrichCustomer(customerUuid),
+        shippingAddress = shippingAddress.enrich(
+            latitude = "50.96490882194811",
+            longitude = "7.014472855463499",
+            status = CustomerStatus.KNOWN_CUSTOMER,
+            id = UUID.fromString("1fbbb9b4-dd34-4930-b54e-d896a68ba343").toString()
+        ),
+        billingAddress = billingAddress.enrich(
+            latitude = "50.94603935915518",
+            longitude = "6.959302840118697",
+            status = CustomerStatus.NEW_CUSTOMER
+        ),
+        )
+  }
+
+  fun IncomingAddress.enrich(
+      latitude: String,
+      longitude: String,
+      status: CustomerStatus,
+      id: String = UUID.randomUUID().toString()
+) = AddressResult(
+      id = id,
+      firstName = firstName,
+      lastName = lastName,
+      streetName = streetName,
+      houseNumber = houseNumber,
+      city = city,
+      country = country,
+      phone = phone,
+      latitude = latitude,
+      longitude = longitude,
+      email = email,
+      postalCode = postalCode,
+      status = status,
+      )
+
+  fun enrichCustomer(id: UUID): CustomerResult {
+    if (id == UUID.fromString( "9e71d9c1-a066-41e0-a79e-061089110d85")) {
+      return CustomerResult(id = id.toString(), firstName = "REWE", lastName = "Digital")
+    }
+    return CustomerResult(
+        id = id.toString(),
+        firstName = "UNKNOWN",
+        lastName = "UNKNOWN",
+        )
+  }
+
+  fun IncomingPrice.enrich() = PriceResult(
+      value = value,
+      monetaryUnit = currency.getMonetaryUnit(),
+  currency = currency.name
+)
+
+  fun IncomingItem.enrich() = ItemResult(
+      id = id,
+      name = name,
+      amount = amount,
+      price = price.enrich(),
+)
+
+  fun IncomingCoupon.enrich() = CouponResult(
+      id = id,
+      description = description,
+      reducedRateInPercentage = if (id == "speakerCouponId") 100 else 10
+      )*/
+
+
+}
+

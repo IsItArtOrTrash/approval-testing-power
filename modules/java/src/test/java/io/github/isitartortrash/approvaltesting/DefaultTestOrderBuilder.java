@@ -1,30 +1,25 @@
 package io.github.isitartortrash.approvaltesting;
 
-import io.github.isitartortrash.approvaltesting.livecoding.ShopOrder;
+import io.github.isitartortrash.approvaltesting.incoming.*;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-import static io.github.isitartortrash.approvaltesting.Currency.EUR;
-import static io.github.isitartortrash.approvaltesting.livecoding.AddressBuilder.anAddress;
-import static io.github.isitartortrash.approvaltesting.livecoding.CouponBuilder.aCoupon;
-import static io.github.isitartortrash.approvaltesting.livecoding.ItemBuilder.anItem;
-import static io.github.isitartortrash.approvaltesting.livecoding.OrderBuilder.anOrder;
-import static io.github.isitartortrash.approvaltesting.livecoding.PriceBuilder.aPrice;
+import static io.github.isitartortrash.approvaltesting.incoming.Currency.EUR;
 
 public class DefaultTestOrderBuilder {
-  public static ShopOrder aDefaultOrder(String orderId) {
-    return anOrder()
+  public static IncomingOrder aDefaultOrder(String orderId) {
+    return IncomingOrder.builder()
         .id(orderId)
         .items(
             List.of(
-                anItem()
+                IncomingItem.builder()
                     .id("someItemId")
                     .name("ATD 3 Conf. Days")
                     .amount(2)
                     .price(
-                        aPrice()
+                        IncomingPrice.builder()
                             .value(225000)
                             .currency(EUR)
                             .build()
@@ -34,16 +29,16 @@ public class DefaultTestOrderBuilder {
         )
         .coupons(
             List.of(
-                aCoupon()
+                IncomingCoupon.builder()
                     .id("someCouponId")
                     .description("Speaker Coupon")
                     .build()
             )
         )
         .deliveryDate(LocalDate.of(2024, 11, 22))
-        .customerUuid(UUID.randomUUID())
+        .customerUuid(UUID.fromString("9e71d9c1-a066-41e0-a79e-061089110d85"))
         .shippingAddress(
-            anAddress()
+            IncomingAddress.builder()
                 .firstName("Janina")
                 .lastName("Nemec")
                 .streetName("Schanzenstr.")
@@ -56,7 +51,7 @@ public class DefaultTestOrderBuilder {
                 .build()
         )
         .billingAddress(
-            anAddress()
+            IncomingAddress.builder()
                 .firstName("Micha")
                 .lastName("Kutz")
                 .streetName("Domstr.")

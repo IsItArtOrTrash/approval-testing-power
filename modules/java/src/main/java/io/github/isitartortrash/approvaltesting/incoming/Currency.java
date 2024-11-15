@@ -1,4 +1,4 @@
-package io.github.isitartortrash.approvaltesting;
+package io.github.isitartortrash.approvaltesting.incoming;
 
 import lombok.AllArgsConstructor;
 
