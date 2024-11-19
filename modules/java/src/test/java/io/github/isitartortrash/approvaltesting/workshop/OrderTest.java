@@ -15,7 +15,6 @@ import static io.github.isitartortrash.approvaltesting.incoming.Currency.EUR;
 import static io.github.isitartortrash.approvaltesting.outgoing.CustomerStatus.KNOWN_CUSTOMER;
 import static io.github.isitartortrash.approvaltesting.outgoing.CustomerStatus.NEW_CUSTOMER;
 import static io.github.isitartortrash.approvaltesting.util.TestUtils.jsonMapper;
-import static java.time.ZoneOffset.UTC;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class OrderTest extends TestBase {
@@ -97,7 +96,7 @@ class OrderTest extends TestBase {
     assertThat(coupon.id()).isEqualTo("speakerCouponId");
     assertThat(coupon.description()).isEqualTo("Speaker Coupon");
 
-    assertThat(LocalDateTime.ofInstant(outgoingOrder.orderTimeStamp(), UTC)).isEqualToIgnoringHours(LocalDateTime.now());
+    assertThat(outgoingOrder.orderTimeStamp()).isEqualToIgnoringHours(LocalDateTime.now());
     assertThat(outgoingOrder.deliveryDate()).isEqualTo(deliveryDate);
 
     OutgoingCustomer customer = outgoingOrder.customer();

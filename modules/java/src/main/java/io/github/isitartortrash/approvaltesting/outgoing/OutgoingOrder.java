@@ -2,8 +2,8 @@ package io.github.isitartortrash.approvaltesting.outgoing;
 
 import lombok.Builder;
 
-import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
@@ -12,7 +12,7 @@ public record OutgoingOrder(
     Long version,
     List<OutgoingItem> items,
     List<OutgoingCoupon> coupons,
-    Instant orderTimeStamp,
+    LocalDateTime orderTimeStamp,
     LocalDate deliveryDate,
     List<OutgoingPrice> shippingCost,
     OutgoingCustomer customer,
