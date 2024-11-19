@@ -8,9 +8,7 @@ import io.github.isitartortrash.approvaltesting.incoming.*;
 import io.github.isitartortrash.approvaltesting.outgoing.*;
 
 import java.time.Clock;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,13 +53,13 @@ public class FakeOrderService implements OrderService {
   public String receiveOrGetOutgoingData(String orderId) {
     try {
       final IncomingOrder incomingOrder = jsonMapper.readValue(savedOrders.get(orderId), IncomingOrder.class);
-      return jsonMapper.writeValueAsString(enrichOrder(incomingOrder, LocalDateTime.now(clock).toInstant(ZoneOffset.UTC)));
+      return jsonMapper.writeValueAsString(enrichOrder(incomingOrder, LocalDateTime.now(clock)));
     } catch (JsonProcessingException e) {
       throw new RuntimeException(e);
     }
   }
 
-  private OutgoingOrder enrichOrder(IncomingOrder incomingOrder, Instant orderTimeStamp) {
+  private OutgoingOrder enrichOrder(IncomingOrder incomingOrder, LocalDateTime orderTimeStamp) {
     return io.github.isitartortrash.approvaltesting.outgoing.OutgoingOrder.builder()
         .id(incomingOrder.id())
         .version(1L)
