@@ -1,33 +1,27 @@
-package io.github.isitartortrash.approvaltesting;
+package io.github.isitartortrash.approvaltesting.util;
 
-import io.github.isitartortrash.approvaltesting.livecoding.ShopOrder;
+import io.github.isitartortrash.approvaltesting.incoming.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
-import static io.github.isitartortrash.approvaltesting.livecoding.AddressBuilder.anAddress;
-import static io.github.isitartortrash.approvaltesting.livecoding.CouponBuilder.aCoupon;
-import static io.github.isitartortrash.approvaltesting.livecoding.CustomerBuilder.aCustomer;
-import static io.github.isitartortrash.approvaltesting.livecoding.ItemBuilder.anItem;
-import static io.github.isitartortrash.approvaltesting.livecoding.OrderBuilder.anOrder;
-import static io.github.isitartortrash.approvaltesting.livecoding.PriceBuilder.aPrice;
+import static io.github.isitartortrash.approvaltesting.incoming.Currency.EUR;
 
 public class DefaultTestOrderBuilder {
-  public static ShopOrder aDefaultOrder(String orderId) {
-    return anOrder()
+  public static IncomingOrder aDefaultOrder(String orderId) {
+    return IncomingOrder.builder()
         .id(orderId)
-        .version(1)
         .items(
             List.of(
-                anItem()
+                IncomingItem.builder()
                     .id("someItemId")
                     .name("ATD 3 Conf. Days")
                     .amount(2)
                     .price(
-                        aPrice()
+                        IncomingPrice.builder()
                             .value(225000)
-                            .monetaryUnit("cent")
-                            .currency("EUR")
+                            .currency(EUR)
                             .build()
                     )
                     .build()
@@ -35,23 +29,16 @@ public class DefaultTestOrderBuilder {
         )
         .coupons(
             List.of(
-                aCoupon()
+                IncomingCoupon.builder()
                     .id("someCouponId")
                     .description("Speaker Coupon")
                     .build()
             )
         )
         .deliveryDate(LocalDate.of(2024, 11, 22))
-        .customer(
-            aCustomer()
-                .id("someCustomerId")
-                .firstName("REWE")
-                .lastName("Digital")
-                .build()
-        )
+        .customerUuid(UUID.fromString("9e71d9c1-a066-41e0-a79e-061089110d85"))
         .shippingAddress(
-            anAddress()
-                .id("someShippingAddressId")
+            IncomingAddress.builder()
                 .firstName("Janina")
                 .lastName("Nemec")
                 .streetName("Schanzenstr.")
@@ -64,8 +51,7 @@ public class DefaultTestOrderBuilder {
                 .build()
         )
         .billingAddress(
-            anAddress()
-                .id("someBillingAddressId")
+            IncomingAddress.builder()
                 .firstName("Micha")
                 .lastName("Kutz")
                 .streetName("Domstr.")

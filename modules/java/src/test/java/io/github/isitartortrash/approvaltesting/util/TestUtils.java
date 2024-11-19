@@ -1,9 +1,8 @@
-package io.github.isitartortrash.approvaltesting;
+package io.github.isitartortrash.approvaltesting.util;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.module.kotlin.KotlinModule;
 
 import static com.fasterxml.jackson.databind.DeserializationFeature.*;
 import static com.fasterxml.jackson.databind.MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS;
@@ -21,6 +20,5 @@ public final class TestUtils {
           .enable(FAIL_ON_MISSING_CREATOR_PROPERTIES, FAIL_ON_NULL_FOR_PRIMITIVES)
           .addModule(new JavaTimeModule())
           .addModule(new Jdk8Module())
-          .addModule((new KotlinModule.Builder()).build())
           .build();
 }

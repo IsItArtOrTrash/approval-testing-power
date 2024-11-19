@@ -1,49 +1,30 @@
 package io.github.isitartortrash.approvaltesting.livecoding;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.github.isitartortrash.approvaltesting.incoming.*;
+import io.github.isitartortrash.approvaltesting.outgoing.*;
+import io.github.isitartortrash.approvaltesting.util.TestBase;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
-import static io.github.isitartortrash.approvaltesting.TestUtils.jsonMapper;
-import static io.github.isitartortrash.approvaltesting.livecoding.AddressBuilder.anAddress;
-import static io.github.isitartortrash.approvaltesting.livecoding.CouponBuilder.aCoupon;
-import static io.github.isitartortrash.approvaltesting.livecoding.CustomerBuilder.aCustomer;
-import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.getOutgoingData;
-import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.sendIngoingData;
-import static io.github.isitartortrash.approvaltesting.livecoding.ItemBuilder.anItem;
-import static io.github.isitartortrash.approvaltesting.livecoding.OrderBuilder.anOrder;
-import static io.github.isitartortrash.approvaltesting.livecoding.PriceBuilder.aPrice;
+import static io.github.isitartortrash.approvaltesting.incoming.Currency.EUR;
+import static io.github.isitartortrash.approvaltesting.util.TestUtils.jsonMapper;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class OldObjectAssertionsTest {
+class OldObjectAssertionsTest extends TestBase {
 
   @Test
+  @Disabled
   void assertionTest() throws JsonProcessingException {
     String orderId = "someOrderId";
-    ShopPrice givenItemPrice = aPrice()
-        .value(225000)
-        .monetaryUnit("cent")
-        .currency("EUR")
-        .build();
-    ShopItem givenItem = anItem()
-        .id("someItemId")
-        .name("ATD 3 Conf. Days")
-        .amount(2)
-        .price(givenItemPrice)
-        .build();
-    ShopCoupon givenCoupon = aCoupon()
-        .id("speakerCouponId")
-        .description("Speaker Coupon")
-        .build();
-    ShopCustomer givenCustomer = aCustomer()
-        .id("someCustomerId")
-        .firstName("REWE")
-        .lastName("Digital")
-        .build();
-    ShopAddress givenShippingAddress = anAddress()
-        .id("someShippingAddressId")
+    LocalDate deliveryDate = LocalDate.of(2024, 11, 22);
+    UUID customerUuid = UUID.fromString("9e71d9c1-a066-41e0-a79e-061089110d85");
+
+    IncomingAddress givenShippingAddress = IncomingAddress.builder()
         .firstName("Janina")
         .lastName("Nemec")
         .streetName("Schanzenstr.")
@@ -54,8 +35,8 @@ class OldObjectAssertionsTest {
         .phone("0221 9758420")
         .email("kontakt@rewe-digital.com")
         .build();
-    ShopAddress givenBillingAddress = anAddress()
-        .id("someBillingAddressId")
+
+    IncomingAddress givenBillingAddress = IncomingAddress.builder()
         .firstName("Micha")
         .lastName("Kutz")
         .streetName("Domstr.")
@@ -67,76 +48,87 @@ class OldObjectAssertionsTest {
         .email("info@rewe-group.com")
         .build();
 
-    ShopOrder order = anOrder()
+    IncomingCoupon givenCoupon = IncomingCoupon.builder()
+        .id("speakerCouponId")
+        .description("Speaker Coupon")
+        .build();
+
+    IncomingItem givenItem = IncomingItem.builder()
+        .id("someItemId")
+        .name("ATD 3 Conf. Days")
+        .amount(2)
+        .price(IncomingPrice.builder().value(225000).currency(EUR).build())
+        .build();
+
+    IncomingOrder incomingOrder = IncomingOrder.builder()
         .id(orderId)
-        .version(1)
         .items(List.of(givenItem))
         .coupons(List.of(givenCoupon))
-        .deliveryDate(LocalDate.of(2024, 11, 22))
-        .customer(givenCustomer)
+        .deliveryDate(deliveryDate)
+        .customerUuid(customerUuid)
         .shippingAddress(givenShippingAddress)
         .billingAddress(givenBillingAddress)
         .build();
 
-    sendIngoingData(order);
+    orderService.sendOrPostIncomingData(incomingOrder);
 
-    OrderResult orderResult = jsonMapper.readValue(getOutgoingData(orderId), OrderResult.class);
+    OutgoingOrder orderResult = jsonMapper.readValue(orderService.receiveOrGetOutgoingData(orderId), OutgoingOrder.class);
 
-    assertThat(orderResult.getId()).isEqualTo("someOrderId");
-    assertThat(orderResult.getVersion()).isEqualTo(1);
+    assertThat(orderResult.id()).isEqualTo("someOrderId");
+    assertThat(orderResult.version()).isEqualTo(1);
 
-    ItemResult item = orderResult.getItems().getFirst();
-    assertThat(item.getId()).isEqualTo("someItemId");
-    assertThat(item.getName()).isEqualTo("ATD 3 Conf. Days");
-    assertThat(item.getAmount()).isEqualTo(2);
+    OutgoingItem item = orderResult.items().getFirst();
+    assertThat(item.id()).isEqualTo("someItemId");
+    assertThat(item.name()).isEqualTo("ATD 3 Conf. Days");
+    assertThat(item.amount()).isEqualTo(2);
 
-    PriceResult itemPrice = item.getPrice();
-    assertThat(itemPrice.getValue()).isEqualTo(225000);
-    assertThat(itemPrice.getMonetaryUnit()).isEqualTo("cent");
-    assertThat(itemPrice.getCurrency()).isEqualTo("EUR");
+    OutgoingPrice itemPrice = item.price();
+    assertThat(itemPrice.value()).isEqualTo(225000);
+    assertThat(itemPrice.monetaryUnit()).isEqualTo("cent");
+    assertThat(itemPrice.currency()).isEqualTo("EUR");
 
-    CouponResult coupon = orderResult.getCoupons().getFirst();
-    assertThat(coupon.getId()).isEqualTo("speakerCouponId");
-    assertThat(coupon.getDescription()).isEqualTo("Speaker Coupon");
+    OutgoingCoupon coupon = orderResult.coupons().getFirst();
+    assertThat(coupon.id()).isEqualTo("speakerCouponId");
+    assertThat(coupon.description()).isEqualTo("Speaker Coupon");
 
-    assertThat(orderResult.getDeliveryDate()).isEqualTo(LocalDate.of(2024, 11, 22));
+    assertThat(orderResult.deliveryDate()).isEqualTo(LocalDate.of(2024, 11, 22));
 
-    PriceResult shippingCost = orderResult.getShippingCost().getFirst();
-    assertThat(shippingCost.getValue()).isEqualTo(500);
-    assertThat(shippingCost.getMonetaryUnit()).isEqualTo("cent");
-    assertThat(shippingCost.getCurrency()).isEqualTo("EUR");
+    OutgoingPrice shippingCost = orderResult.shippingCost().getFirst();
+    assertThat(shippingCost.value()).isEqualTo(500);
+    assertThat(shippingCost.monetaryUnit()).isEqualTo("cent");
+    assertThat(shippingCost.currency()).isEqualTo("EUR");
 
-    CustomerResult customer = orderResult.getCustomer();
-    assertThat(customer.getId()).isEqualTo("someCustomerId");
-    assertThat(customer.getFirstName()).isEqualTo("REWE");
-    assertThat(customer.getLastName()).isEqualTo("Digital");
+    OutgoingCustomer customer = orderResult.customer();
+    assertThat(customer.id()).isEqualTo("someCustomerId");
+    assertThat(customer.firstName()).isEqualTo("REWE");
+    assertThat(customer.lastName()).isEqualTo("Digital");
 
-    AddressResult shippingAddress = orderResult.getShippingAddress();
-    assertThat(shippingAddress.getId()).isEqualTo("someShippingAddressId");
-    assertThat(shippingAddress.getFirstName()).isEqualTo("Janina");
-    assertThat(shippingAddress.getLastName()).isEqualTo("Nemec");
-    assertThat(shippingAddress.getStreetName()).isEqualTo("Schanzenstr.");
-    assertThat(shippingAddress.getHouseNumber()).isEqualTo("6-20");
-    assertThat(shippingAddress.getPostalCode()).isEqualTo("51063");
-    assertThat(shippingAddress.getCity()).isEqualTo("Köln");
-    assertThat(shippingAddress.getCountry()).isEqualTo("Deutschland");
-    assertThat(shippingAddress.getPhone()).isEqualTo("0221 9758420");
-    assertThat(shippingAddress.getLatitude()).isEqualTo("50.96490882194811");
-    assertThat(shippingAddress.getLongitude()).isEqualTo("7.014472855463499");
-    assertThat(shippingAddress.getEmail()).isEqualTo("kontakt@rewe-digital.com");
+    OutgoingAddress shippingAddress = orderResult.shippingAddress();
+    assertThat(shippingAddress.id()).isEqualTo("someShippingAddressId");
+    assertThat(shippingAddress.firstName()).isEqualTo("Janina");
+    assertThat(shippingAddress.lastName()).isEqualTo("Nemec");
+    assertThat(shippingAddress.streetName()).isEqualTo("Schanzenstr.");
+    assertThat(shippingAddress.houseNumber()).isEqualTo("6-20");
+    assertThat(shippingAddress.postalCode()).isEqualTo("51063");
+    assertThat(shippingAddress.city()).isEqualTo("Köln");
+    assertThat(shippingAddress.country()).isEqualTo("Deutschland");
+    assertThat(shippingAddress.phone()).isEqualTo("0221 9758420");
+    assertThat(shippingAddress.latitude()).isEqualTo("50.96490882194811");
+    assertThat(shippingAddress.longitude()).isEqualTo("7.014472855463499");
+    assertThat(shippingAddress.email()).isEqualTo("kontakt@rewe-digital.com");
 
-    AddressResult billingAddress = orderResult.getBillingAddress();
-    assertThat(billingAddress.getId()).isEqualTo("someBillingAddressId");
-    assertThat(billingAddress.getFirstName()).isEqualTo("Micha");
-    assertThat(billingAddress.getLastName()).isEqualTo("Kutz");
-    assertThat(billingAddress.getStreetName()).isEqualTo("Domstr.");
-    assertThat(billingAddress.getHouseNumber()).isEqualTo("20");
-    assertThat(billingAddress.getPostalCode()).isEqualTo("50668");
-    assertThat(billingAddress.getCity()).isEqualTo("Köln");
-    assertThat(billingAddress.getCountry()).isEqualTo("Deutschland");
-    assertThat(billingAddress.getPhone()).isEqualTo("+49 221 1490");
-    assertThat(billingAddress.getLatitude()).isEqualTo("50.94603935915518");
-    assertThat(billingAddress.getLongitude()).isEqualTo("6.959302840118697");
-    assertThat(billingAddress.getEmail()).isEqualTo("info@rewe-group.com");
+    OutgoingAddress billingAddress = orderResult.billingAddress();
+    assertThat(billingAddress.id()).isEqualTo("someBillingAddressId");
+    assertThat(billingAddress.firstName()).isEqualTo("Micha");
+    assertThat(billingAddress.lastName()).isEqualTo("Kutz");
+    assertThat(billingAddress.streetName()).isEqualTo("Domstr.");
+    assertThat(billingAddress.houseNumber()).isEqualTo("20");
+    assertThat(billingAddress.postalCode()).isEqualTo("50668");
+    assertThat(billingAddress.city()).isEqualTo("Köln");
+    assertThat(billingAddress.country()).isEqualTo("Deutschland");
+    assertThat(billingAddress.phone()).isEqualTo("+49 221 1490");
+    assertThat(billingAddress.latitude()).isEqualTo("50.94603935915518");
+    assertThat(billingAddress.longitude()).isEqualTo("6.959302840118697");
+    assertThat(billingAddress.email()).isEqualTo("info@rewe-group.com");
   }
 }

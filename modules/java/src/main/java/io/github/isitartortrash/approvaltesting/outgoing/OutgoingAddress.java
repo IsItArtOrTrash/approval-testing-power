@@ -1,6 +1,9 @@
-package io.github.isitartortrash.approvaltesting;
+package io.github.isitartortrash.approvaltesting.outgoing;
 
-record Address(
+import lombok.Builder;
+
+@Builder
+public record OutgoingAddress(
     String id,
     String firstName,
     String lastName,
@@ -12,5 +15,7 @@ record Address(
     String latitude,
     String longitude,
     String email,
-    String postalCode) {
+    String postalCode,
+    CustomerStatus status
+) {
 }

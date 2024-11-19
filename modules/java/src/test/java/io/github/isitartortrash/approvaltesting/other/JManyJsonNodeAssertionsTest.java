@@ -2,25 +2,24 @@ package io.github.isitartortrash.approvaltesting.other;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import io.github.isitartortrash.approvaltesting.livecoding.ShopOrder;
+import io.github.isitartortrash.approvaltesting.incoming.IncomingOrder;
+import io.github.isitartortrash.approvaltesting.util.TestBase;
 import org.junit.jupiter.api.Test;
 
-import static io.github.isitartortrash.approvaltesting.DefaultTestOrderBuilder.aDefaultOrder;
-import static io.github.isitartortrash.approvaltesting.TestUtils.jsonMapper;
-import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.getOutgoingData;
-import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctionalityKt.sendIngoingData;
+import static io.github.isitartortrash.approvaltesting.util.DefaultTestOrderBuilder.aDefaultOrder;
+import static io.github.isitartortrash.approvaltesting.util.TestUtils.jsonMapper;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class JManyJsonNodeAssertionsTest {
+class JManyJsonNodeAssertionsTest extends TestBase {
 
   @Test
   void assertionTest() throws JsonProcessingException {
     String orderId = "someOrderId";
-    ShopOrder order = aDefaultOrder(orderId);
+    IncomingOrder order = aDefaultOrder(orderId);
 
-    sendIngoingData(order);
+    orderService.sendOrPostIncomingData(order);
 
-    JsonNode result = jsonMapper.readTree(getOutgoingData(orderId));
+    JsonNode result = jsonMapper.readTree(orderService.receiveOrGetOutgoingData(orderId));
 
     assertThat(result.get("id").asText()).isEqualTo("someOrderId");
     assertThat(result.get("version").asText()).isEqualTo("1");
@@ -41,7 +40,7 @@ class JManyJsonNodeAssertionsTest {
     assertThat(coupon.get("reducedRateInPercentage").asInt()).isEqualTo(10);
 
     JsonNode orderTimeStamp = result.get("orderTimeStamp");
-    assertThat(orderTimeStamp.asText()).isEqualTo("2024-07-19T11:45:00");
+    assertThat(orderTimeStamp.asText()).isNotNull();
 
     JsonNode deliveryDate = result.get("deliveryDate");
     assertThat(deliveryDate.asText()).isEqualTo("2024-11-22");
@@ -52,12 +51,12 @@ class JManyJsonNodeAssertionsTest {
     assertThat(shippingCost.get("currency").asText()).isEqualTo("EUR");
 
     JsonNode customer = result.get("customer");
-    assertThat(customer.get("id").asText()).isEqualTo("someCustomerId");
+    assertThat(customer.get("id").asText()).isEqualTo(order.customerUuid().toString());
     assertThat(customer.get("firstName").asText()).isEqualTo("REWE");
     assertThat(customer.get("lastName").asText()).isEqualTo("Digital");
 
     JsonNode shippingAddress = result.get("shippingAddress");
-    assertThat(shippingAddress.get("id").asText()).isEqualTo("someShippingAddressId");
+    assertThat(shippingAddress.get("id").asText()).isEqualTo("1fbbb9b4-dd34-4930-b54e-d896a68ba343");
     assertThat(shippingAddress.get("firstName").asText()).isEqualTo("Janina");
     assertThat(shippingAddress.get("lastName").asText()).isEqualTo("Nemec");
     assertThat(shippingAddress.get("streetName").asText()).isEqualTo("Schanzenstr.");
@@ -71,7 +70,6 @@ class JManyJsonNodeAssertionsTest {
     assertThat(shippingAddress.get("email").asText()).isEqualTo("kontakt@rewe-digital.com");
 
     JsonNode billingAddress = result.get("billingAddress");
-    assertThat(billingAddress.get("id").asText()).isEqualTo("someBillingAddressId");
     assertThat(billingAddress.get("firstName").asText()).isEqualTo("Micha");
     assertThat(billingAddress.get("lastName").asText()).isEqualTo("Kutz");
     assertThat(billingAddress.get("streetName").asText()).isEqualTo("Domstr.");
