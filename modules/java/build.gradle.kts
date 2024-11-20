@@ -31,6 +31,7 @@ dependencies {
     val jqwikVersion = "1.10.1"
     testImplementation("net.jqwik:jqwik:$jqwikVersion")
 
+    testImplementation("com.approvaltests:approvaltests:24.9.0")
     val mockitoVersion = "5.24.0"
     testImplementation("org.mockito:mockito-core:$mockitoVersion")
     testImplementation("org.mockito:mockito-junit-jupiter:$mockitoVersion")

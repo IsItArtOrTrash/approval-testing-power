@@ -1,0 +1,67 @@
+{
+  "id": "someOrderId",
+  "version": 1,
+  "items": [
+    {
+      "id": "someItemId",
+      "name": "ATD 3 Conf. Days",
+      "amount": 2,
+      "price": {
+        "value": 225000,
+        "monetaryUnit": "cent",
+        "currency": "EUR"
+      }
+    }
+  ],
+  "coupons": [
+    {
+      "id": "speakerCouponId",
+      "description": "Speaker Coupon",
+      "reducedRateInPercentage": 100
+    }
+  ],
+  "orderTimeStamp": "[Date1]",
+  "deliveryDate": "2024-11-22",
+  "shippingCost": [
+    {
+      "value": 500,
+      "monetaryUnit": "cent",
+      "currency": "EUR"
+    }
+  ],
+  "customer": {
+    "id": "guid_1",
+    "firstName": "REWE",
+    "lastName": "Digital"
+  },
+  "shippingAddress": {
+    "id": "guid_2",
+    "firstName": "Janina",
+    "lastName": "Nemec",
+    "streetName": "Schanzenstr.",
+    "houseNumber": "6-20",
+    "city": "Köln",
+    "country": "Deutschland",
+    "phone": "0221 9758420",
+    "latitude": "50.96490882194811",
+    "longitude": "7.014472855463499",
+    "email": "kontakt@rewe-digital.com",
+    "postalCode": "51063",
+    "status": "known_customer"
+  },
+  "billingAddress": {
+    "id": "guid_3",
+    "firstName": "Micha",
+    "lastName": "Kutz",
+    "streetName": "Domstr.",
+    "houseNumber": "20",
+    "city": "Köln",
+    "country": "Deutschland",
+    "phone": "+49 221 1490",
+    "latitude": "50.94603935915518",
+    "longitude": "6.959302840118697",
+    "email": "info@rewe-group.com",
+    "postalCode": "50668",
+    "status": "new_customer"
+  }
+}
