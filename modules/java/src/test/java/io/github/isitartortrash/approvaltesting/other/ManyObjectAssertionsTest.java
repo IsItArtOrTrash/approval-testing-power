@@ -13,7 +13,7 @@ import static io.github.isitartortrash.approvaltesting.utils.DefaultTestOrderBui
 import static io.github.isitartortrash.approvaltesting.utils.TestUtils.jsonMapper;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class JManyObjectAssertionsTest {
+class ManyObjectAssertionsTest {
 
   @Test
   void assertionTest() throws JsonProcessingException {

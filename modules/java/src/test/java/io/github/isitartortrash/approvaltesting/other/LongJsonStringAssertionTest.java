@@ -8,7 +8,7 @@ import static io.github.isitartortrash.approvaltesting.livecoding.FakeFunctional
 import static io.github.isitartortrash.approvaltesting.utils.DefaultTestOrderBuilder.aDefaultOrder;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class JLongJsonStringAssertionTest {
+public class LongJsonStringAssertionTest {
 
   @Test
   void assertionTest() {
